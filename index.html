@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#FFFFFF" />
+  <link rel="stylesheet" href="https://unpkg.com/jsmind@0.4.6/style/jsmind.css" integrity="sha256-bRaebMjWC2LwqX1p18fo00K/1Up8ltIu787l8MrlT/k=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/colorjoe@4.1.1/css/colorjoe.css" integrity="sha256-1mVRjhKP/uP1dPmXtl9jUAs99aV+74wfnsuUSy4/gfs=" crossorigin="anonymous">
+  <link href="https://unpkg.com/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous" defer></script>
+  <script src="https://unpkg.com/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous" defer></script>
+  <script src="https://unpkg.com/mark.js@8.11.1/dist/mark.es6.min.js" integrity="sha256-51i9DIUkhl5gZzZ5xKiWbJ2qXewVR6W0MUZYPVwmyJ4=" crossorigin="anonymous" defer></script>
+  <script src="https://unpkg.com/lodash@4.17.21/lodash.min.js" integrity="sha256-qXBd/EfAdjOA2FGrGAG+b3YBn2tn5A6bhz+LSgYD96k=" crossorigin="anonymous" defer></script>
+  <script src="https://unpkg.com/dayjs@1.10.5/dayjs.min.js" integrity="sha256-v+HEJfGs5a3wK8/uqXs31dH/xcyJDf21m0AuZUWP3PA=" crossorigin="anonymous" defer></script>
+  <script src="https://unpkg.com/sortablejs@latest/Sortable.min.js" defer></script>
+  <!-- <script src="https://unpkg.com/lodash@4/lodash.min.js"></script> -->
+  <script src="https://unpkg.com/jsmind@0.4.6/js/jsmind.js" integrity="sha256-R+mzTkztiO+RQCSXTWATMB3H5nOI7rvDYMmlAawMdXY=" crossorigin="anonymous" defer></script>
+  <script src="https://unpkg.com/split.js@1.6.4/dist/split.min.js" integrity="sha256-3dj5QuMIOFU/bn4buiCQsVULDPjncXio3emedCODG+I=" crossorigin="anonymous" defer></script>
+  <script src="https://unpkg.com/colorjoe@4.1.1/dist/colorjoe.min.js" integrity="sha256-WwaRHqV51K6iy3f8lO6Vd37y3bodvAHgJWZEn69qlaw=" crossorigin="anonymous" defer></script>
+  <script type="text/javascript" src="main.js" defer></script>
+  <title>CQA</title>
+</head>
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <!-- colorjoe.css overrides a .container style -->
+  <div class="container outer overflow-visible">
+    <div class="row gy-3 justify-content-center align-items-start">
+      <div class="col col-6">
+        <div id="question-container">
+          <h1 id="question" class="h3"></h1>
+          <div id="question-description" class="text-muted"></div>
+        </div>
+        <div id="answer-container">
+          <template id="template-answer">
+            <div class="answer-outer mt-2 mb-3">
+              <div class="profile d-flex align-items-center my-2">
+                <img src="assets/avatar.png" class="avatar rounded-circle border me-2">
+                <div class="profile-text">
+                  <div>
+                    <span class="author-name fw-bold"></span>
+                    <span class="author-description"></span>
+                  </div>
+                  <div class="date text-muted"></div>
+                </div>
+              </div>
+              <div class="answer">
+                <div class="content my-2 truncate truncate-large"></div>
+                <button class="content-collapse-button btn btn-link"><i class="bi bi-caret-down-fill"></i> Expand</button>
+                <div class="concept mt-1"></div>
+              </div>
+              <div class="my-2 d-flex justify-content-between align-items-start">
+                <div class="statistics text-muted">
+                  <i class="bi bi-eye"></i>
+                  <span class="views"></span>
+                  <i class="bi bi-arrow-up-circle"></i>
+                  <span class="upvotes"></span>
+                </div>
+                <div class="similar-answers w-75 flex-0 invisible">
+                  <div id="" class="accordion">
+                    <div class="accordion-item">
+                      <div class="accordion-header">
+                      </div>
+                      <div id="" class="accordion-collapse collapse" data-bs-parent="#accordionId">
+                        <div class="accordion-body p-0">
+                          <ul class="list-group list-group-flush">
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+      <div class="col col-4 side">
+        <div class="card" id="note-pane-card">
+          <div class="card-header">
+            Navigation View
+          </div>
+          <div class="card-body" id="note-pane-card-body">
+            Navigation View Content Here
+          </div>
+        </div>
+        <div class="card" id="chatbot-pane-card">
+          <div class="card-header">
+            Chatbot Pane
+          </div>
+          <div id="concept-pane-card-body" class="card-body">
+            Chatbot Here
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button type="button" id="back-to-top" class="shadow bg-light" style="display: none;" onclick="document.body.scrollTop = 0;document.documentElement.scrollTop = 0;">
+    <div><i class="bi bi-caret-up"></i></div>
+    <span>Top</span>
+  </button>
+  <!-- <div id="colorjoe-popover" role="tooltip">
+    <div id="colorjoe-container"></div>
+    <div class="arrow" data-popper-arrow></div>
+    <template id="template-colorjoe-buttons">
+      <input class="save" value="Save" type="button" aria-label="save and close">
+      <input class="clear" value="Clear" type="button" aria-label="clear and close">
+    </template>
+  </div> -->
+  <!-- <div class="modal fade" id="subConceptModal" tabindex="-1" aria-labelledby="subConceptModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header flex-wrap">
+          <h5 class="modal-title" id="subConceptModalLabel">Propositions with sub-aspect <span class="text-decoration-underline"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <small class="modal-subtitle w-100 text-muted">Click propositions below to quickly add them to the note pane</small>
+        </div>
+        <div class="modal-body">
+          <ul></ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editModalLabel">Please enter your <span></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editModalForm" onsubmit="onEditClick(event)">
+            <div class="mb-3">
+              <input type="text" class="form-control" id="edit-input" required>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" onclick="onEditClick(event)">Confirm</button>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <input type="file" id="upload-file-input" hidden/>
+  <div id="uploaded-json" style="display: none;"></div>
+</body>
+</html>

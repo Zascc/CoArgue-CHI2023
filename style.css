@@ -1,0 +1,398 @@
+/* layout */
+.outer {
+  margin-top: 50px;
+}
+
+.side {
+  height: calc(100vh - 50px); /* 50是整个顶部的margin */
+  position: sticky;
+  top: 34px; /* 50 - 16，16是默认col都会加上的margin-top。不知道为什么sticky top 50的时候，即便这个col的margin-top强制设置成0了，还是会把这16的空留出来 */
+  margin: 0 0 16px;
+}
+
+/* question */
+#question-container::after, .answer-outer:not(:last-child):after {
+  content: '';
+  display: block;
+  border: 1px solid #f5f5f5;
+  margin: 1rem 0.25rem 1.5rem;
+}
+
+/* profile */
+.avatar {
+  max-width: 36px;
+  max-height: 36px;
+}
+.profile-text {
+  font-size: 14px;
+}
+.date {
+  font-size: 10px;
+}
+
+/* answer & its propositions */
+mark, .mark {
+  padding-left: 0;
+  padding-right: 0;
+}
+.proposition {
+  cursor: pointer;
+}
+.content .proposition ~ input[type="checkbox"] {
+  position: absolute;
+  transform: scale(0.75) translate(-0rem, -0.4rem);
+  cursor: pointer;
+  visibility: hidden;
+}
+.content .proposition ~ input[type="checkbox"]:checked {
+  visibility: visible;
+}
+.content.truncate .proposition ~ input[type="checkbox"] {
+  visibility: hidden !important;
+}
+
+.content.truncate mark {
+  background-color: unset !important;
+  color: black !important;
+  cursor: auto !important;
+}
+.content.truncate {
+  pointer-events: none;
+}
+
+.content {
+  position: relative;
+}
+.content.truncate::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5rem;
+  background: linear-gradient(to top, #ffff, #fff0);
+  z-index: 1;
+}
+.content.truncate.truncate-small::before {
+  height: 2rem;
+}
+.content-collapse-button {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 0;
+  text-decoration: none;
+}
+.content:not(.truncate)~.content-collapse-button {
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#answer-container .badge {
+  cursor: pointer;
+}
+
+/* statistics */
+.statistics {
+  margin: calc(.5rem + 1px) 0; /* match "similar answer" accordion's padding & border */
+}
+.statistics > .views {
+  margin-right: .75ch;
+}
+.statistics > .views:empty::before, .statistics > .upvotes:empty::before {
+  content: '0';
+}
+
+/* similar answer & its propositions */
+.similar-answers .statistics {
+  margin: 0;
+}
+.similar-answers .profile-text, .similar-answers .statistics {
+  font-size: 12px;
+}
+
+.similar-answers .content {
+  font-size: 14px;
+  transition: all .5s;
+}
+
+.similar-answers .content p,ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.similar-answers .content mark {
+  padding: 0;
+}
+
+.similar-answers .concept {
+  font-size: 12px;
+}
+
+/* note */
+.edit-button {
+  color: #0d6efd;
+  cursor: pointer;
+}
+.edit-button:hover {
+  color: #0a58ca;
+}
+
+ul#note-container:not(:empty) {
+  padding: 0 0 0 1rem !important;
+}
+ul#note-container:empty::after {
+  content: 'Click on highlighted propositions to add them here';
+  color: rgb(185, 194, 204);
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 50%;
+}
+
+ul#note-container, #note-container ul {
+  list-style: none;
+}
+
+#note-container .proposition-container {
+  padding-left: 1rem !important;
+}
+
+#note-container .drag-handle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(-100%);
+  box-sizing: border-box;
+  cursor: move;
+}
+#note-container .collapse-handle > i {
+  display: inline-block;
+  transition: transform .35s ease;
+}
+#note-container .collapse-handle[aria-expanded="false"] > i {
+  transform: rotate(-90deg);
+}
+#note-container .handle {
+  color: rgba(60, 60, 60, 0.75);
+  border-radius: 5px;
+}
+#note-container .handle:hover { /* 悬浮半透明背景 */
+  background-color: rgba(224, 224, 224, 0.5);
+}
+
+.popover-body { /* 这是bootstrap的类 */
+  padding: 5px 15px;
+}
+
+/* Color Picker */
+.pcr-clear {
+  background: whitesmoke !important;
+  color: black !important;
+}
+.pcr-clear:focus {
+  box-shadow: 0 0 0 1px hsl(0deg 0% 100% / 85%), 0 0 0 3px rgb(245 245 245 / 40%) !important;
+}
+
+/* Concept pane */
+#concept-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+#concept-list-container {
+  flex: 0;
+  margin-bottom: .75rem;
+}
+#mindmap-container {
+  flex: 1;
+}
+#concept-list-container:empty::after {
+  content: 'Loading...';
+  color: rgb(185, 194, 204);
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 50%;
+  text-align: center;
+}
+
+.concept-badge {
+  cursor: pointer;
+}
+.concept-badge[selected]:not([active]) {
+  box-shadow: 0 0rem 0.3rem 0.15rem #9ec5fed9;
+}
+.concept-badge[active]:not([selected]) {
+  box-shadow: inset 0 0 0 0.2rem #A3CFBB;
+}
+.concept-badge[active][selected] {
+  box-shadow: 0 0rem 0.3rem 0.15rem #9ec5fed9, inset 0 0 0 0.2rem #A3CFBB;
+}
+
+jmnode {
+  font-size: 12px;
+  padding: 5px;
+}
+jmnode.root {
+  font-size: 16px;
+  padding: 8px;
+}
+jmnode:not(.root) {
+  cursor: pointer;
+}
+
+/* note pane + concept pane layout */
+#note-pane-card > .card-body, #concept-pane-card > .card-body {
+  overflow: auto;
+}
+/* #note-pane-card > .card-body::-webkit-scrollbar,
+#concept-pane-card > .card-body::-webkit-scrollbar {
+  width: 12px;
+}
+#note-pane-card > .card-body::-webkit-scrollbar-thumb,
+#concept-pane-card > .card-body::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgb(223, 223, 223);
+} */
+.gutter.gutter-vertical { /* Created by Split.js */
+  cursor: row-resize;
+  text-align: center;
+  position: relative;
+}
+.gutter.gutter-vertical::after {
+  display: inline-block;
+  content: "";
+  vertical-align: -.125em;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23333" class="bi bi-three-dots" viewBox="0 0 16 16"><path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>');
+  background-repeat: no-repeat;
+  background-size: 1rem 1rem;
+  width: 1rem;
+  height: 1rem;
+}
+.gutter.gutter-vertical::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  border-radius: .25rem;
+  transition: background-color .3s;
+}
+.gutter.gutter-vertical:hover::before {
+  background-color: rgba(216, 216, 216, 0.25);
+}
+
+/* Concept pane sub-concept modal */
+#subConceptModal .proposition ~ input[type="checkbox"] {
+  margin-left: 0.2rem;
+  transform: scale(0.8);
+  cursor: pointer;
+}
+
+.modal-subtitle {
+  font-size: 12px;
+}
+
+/* answer pane color picker popover */
+#colorjoe-popover {
+  background-color: #fff;
+  transition: opacity .3s;
+  z-index: 100;
+}
+#colorjoe-popover:not([data-show]) {
+  opacity: 0;
+  pointer-events: none;
+  cursor: inherit;
+}
+#colorjoe-popover[data-show] {
+  opacity: 1;
+}
+.arrow, .arrow::before {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: inherit;
+}
+.arrow {
+  visibility: hidden;
+}
+.arrow::before {
+  visibility: visible;
+  content: '';
+  transform: rotate(45deg);
+}
+#colorjoe-popover[data-popper-placement^='top'] > .arrow {
+  bottom: -4px;
+}
+#colorjoe-popover[data-popper-placement^='bottom'] > .arrow {
+  top: -4px;
+}
+#colorjoe-popover[data-popper-placement^='left'] > .arrow {
+  right: -4px;
+}
+#colorjoe-popover[data-popper-placement^='right'] > .arrow {
+  left: -4px;
+}
+
+/* back to top */
+#back-to-top {
+  position: fixed;
+  bottom: 3rem;
+  right: 3rem;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: none;
+  text-align: center;
+}
+#back-to-top div {
+  font-size: 20px;
+  margin: -5px 0 -10px;
+}
+#back-to-top span {
+  font-size: 12px;
+}
+
+/* common */
+body.ctrl-down .proposition, body.ctrl-down .note > .content {
+  cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23333" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/></svg>'), ew-resize;
+}
+
+.placeholder {
+  color: rgb(185, 194, 204);
+  margin: 1rem 0;
+}
+
+.truncate {
+  overflow: hidden;
+  max-height: 15rem;
+  /* display: -webkit-box;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  -webkit-box-orient: vertical; */
+}
+.truncate.truncate-large {
+  max-height: 15rem;
+  /* -webkit-line-clamp: 8;
+  line-clamp: 8; */
+}
+.truncate.truncate-small {
+  max-height: 5rem;
+  /* -webkit-line-clamp: 3;
+  line-clamp: 3; */
+}
+
+.blink {
+  animation: anim-blink .5s linear 1s normal 2;
+}
+@keyframes anim-blink {
+  20%, 80% {
+    background-color: rgb(250, 206, 220);
+  }
+}
+
