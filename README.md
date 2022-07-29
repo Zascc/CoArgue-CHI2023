@@ -3,4 +3,9 @@ Frontend code for CHI2022 CQA-Lurker Project
 
 ## TO DO
 - [ ] Donuts chart of Navigation View
+- [ ] Clickable donuts chart segments
+- [ ] Visualization of detail claim/premise after clicking donut segment
+- [ ] Writing Pane
 - [ ] Chatbot Pane
+- [x] <del>Claim premise hover tooltip text</del>
+
