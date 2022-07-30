@@ -35,21 +35,7 @@ mark, .mark {
   padding-left: 0;
   padding-right: 0;
 }
-.proposition {
-  cursor: pointer;
-}
-.content .proposition ~ input[type="checkbox"] {
-  position: absolute;
-  transform: scale(0.75) translate(-0rem, -0.4rem);
-  cursor: pointer;
-  visibility: hidden;
-}
-.content .proposition ~ input[type="checkbox"]:checked {
-  visibility: visible;
-}
-.content.truncate .proposition ~ input[type="checkbox"] {
-  visibility: hidden !important;
-}
+
 
 .content.truncate mark {
   background-color: unset !important;
@@ -91,9 +77,6 @@ mark, .mark {
   border-bottom-right-radius: 0;
 }
 
-#answer-container .badge {
-  cursor: pointer;
-}
 
 /* statistics */
 .statistics {
@@ -106,148 +89,13 @@ mark, .mark {
   content: '0';
 }
 
-/* similar answer & its propositions */
-.similar-answers .statistics {
-  margin: 0;
-}
-.similar-answers .profile-text, .similar-answers .statistics {
-  font-size: 12px;
-}
 
-.similar-answers .content {
-  font-size: 14px;
-  transition: all .5s;
-}
-
-.similar-answers .content p,ul {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-
-.similar-answers .content mark {
-  padding: 0;
-}
-
-.similar-answers .concept {
-  font-size: 12px;
-}
-
-/* note */
-.edit-button {
-  color: #0d6efd;
-  cursor: pointer;
-}
-.edit-button:hover {
-  color: #0a58ca;
-}
-
-ul#note-container:not(:empty) {
-  padding: 0 0 0 1rem !important;
-}
-ul#note-container:empty::after {
-  content: 'Click on highlighted propositions to add them here';
-  color: rgb(185, 194, 204);
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  top: 50%;
-}
-
-ul#note-container, #note-container ul {
-  list-style: none;
-}
-
-#note-container .proposition-container {
-  padding-left: 1rem !important;
-}
-
-#note-container .drag-handle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  transform: translateX(-100%);
-  box-sizing: border-box;
-  cursor: move;
-}
-#note-container .collapse-handle > i {
-  display: inline-block;
-  transition: transform .35s ease;
-}
-#note-container .collapse-handle[aria-expanded="false"] > i {
-  transform: rotate(-90deg);
-}
-#note-container .handle {
-  color: rgba(60, 60, 60, 0.75);
-  border-radius: 5px;
-}
-#note-container .handle:hover { /* 悬浮半透明背景 */
-  background-color: rgba(224, 224, 224, 0.5);
-}
-
-.popover-body { /* 这是bootstrap的类 */
-  padding: 5px 15px;
-}
-
-/* Color Picker */
-.pcr-clear {
-  background: whitesmoke !important;
-  color: black !important;
-}
-.pcr-clear:focus {
-  box-shadow: 0 0 0 1px hsl(0deg 0% 100% / 85%), 0 0 0 3px rgb(245 245 245 / 40%) !important;
-}
-
-/* Concept pane */
-#concept-container {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-#concept-list-container {
-  flex: 0;
-  margin-bottom: .75rem;
-}
-#mindmap-container {
-  flex: 1;
-}
-#concept-list-container:empty::after {
-  content: 'Loading...';
-  color: rgb(185, 194, 204);
-  position: absolute;
-  left: 16px;
-  right: 16px;
-  top: 50%;
-  text-align: center;
-}
-
-.concept-badge {
-  cursor: pointer;
-}
-.concept-badge[selected]:not([active]) {
-  box-shadow: 0 0rem 0.3rem 0.15rem #9ec5fed9;
-}
-.concept-badge[active]:not([selected]) {
-  box-shadow: inset 0 0 0 0.2rem #A3CFBB;
-}
-.concept-badge[active][selected] {
-  box-shadow: 0 0rem 0.3rem 0.15rem #9ec5fed9, inset 0 0 0 0.2rem #A3CFBB;
-}
-
-jmnode {
-  font-size: 12px;
-  padding: 5px;
-}
-jmnode.root {
-  font-size: 16px;
-  padding: 8px;
-}
-jmnode:not(.root) {
-  cursor: pointer;
-}
 
 /* note pane + concept pane layout */
 #note-pane-card > .card-body, #concept-pane-card > .card-body {
   overflow: auto;
+  height: fit-content;
+  width: 294;
 }
 /* #note-pane-card > .card-body::-webkit-scrollbar,
 #concept-pane-card > .card-body::-webkit-scrollbar {
@@ -298,46 +146,6 @@ jmnode:not(.root) {
   font-size: 12px;
 }
 
-/* answer pane color picker popover */
-#colorjoe-popover {
-  background-color: #fff;
-  transition: opacity .3s;
-  z-index: 100;
-}
-#colorjoe-popover:not([data-show]) {
-  opacity: 0;
-  pointer-events: none;
-  cursor: inherit;
-}
-#colorjoe-popover[data-show] {
-  opacity: 1;
-}
-.arrow, .arrow::before {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  background: inherit;
-}
-.arrow {
-  visibility: hidden;
-}
-.arrow::before {
-  visibility: visible;
-  content: '';
-  transform: rotate(45deg);
-}
-#colorjoe-popover[data-popper-placement^='top'] > .arrow {
-  bottom: -4px;
-}
-#colorjoe-popover[data-popper-placement^='bottom'] > .arrow {
-  top: -4px;
-}
-#colorjoe-popover[data-popper-placement^='left'] > .arrow {
-  right: -4px;
-}
-#colorjoe-popover[data-popper-placement^='right'] > .arrow {
-  left: -4px;
-}
 
 /* back to top */
 #back-to-top {
@@ -394,5 +202,49 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   20%, 80% {
     background-color: rgb(250, 206, 220);
   }
+}
+
+.claim, .premise {
+  position: relative;
+  display: inline-block;
+}
+
+.claim .claim-detail, .premise .premise-detail {
+  visibility: hidden;
+  width: fit-content;
+  background-color: rgb(185, 185, 185);
+  color: rgb(0, 0, 0);
+  text-align: left;
+  border-radius: 6px;
+  padding: 5px 5px;
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  left: 50%;
+  margin-left: -60px;
+  font-size: small;
+  font-weight: normal;
+}
+
+.claim .claim-detail::after, .premise .premise-detail::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgb(185, 185, 185) transparent;
+  
+}
+
+.claim:hover .claim-detail, .premise:hover .premise-detail {
+  visibility: visible;
+}
+
+/* question container and writing button */
+#question-content-container {
+  display: flex;
+  justify-content: space-evenly;
 }
 
