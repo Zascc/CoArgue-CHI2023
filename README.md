@@ -9,3 +9,7 @@ Frontend code for CHI2022 CQA-Lurker Project
 - [ ] Chatbot Pane
 - [x] <del>Claim premise hover tooltip text</del>
 
+### 2022-08-01
+- [x] Writing Pane default text value in textarea
+- [ ] Modal after clicking claim center
+- [ ] Scroll to original answer when clicking claim sentences in the modal
