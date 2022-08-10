@@ -1,0 +1,53 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+
+- intent: write_now
+  examples: |
+    - write now
+    - write the answer now
+    - I want to start writing
+    - I would like to write something
+
+- intent: discuss
+  examples: |
+    - discuss
+    - I want to have some discussion with you
+    - discuss with you
+    - I want to discuss with you about my ideas
+
+
+- intent: no_idea
+  examples: |
+    - no idea
+    - I have no idea about it
+    - I don't know
+
+- intent: stance
+  examples: |
+    - [Positive](StanceCategory)
+    - [positive](StanceCategory)
+    - [Negative](StanceCategory)
+    - [negative](StanceCategory)
+    - [Neutral](StanceCategory)
+    - [neutral](StanceCategory)
+
+- intent: provide_keywords
+  examples: |
+    - keywords: 
+    - Keywords: 

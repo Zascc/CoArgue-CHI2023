@@ -1,0 +1,62 @@
+version: "3.1"
+
+stories:
+
+- story: greet and initialization
+  steps:
+  - intent: greet
+  - action: greet_and_intro_action
+  - action: initialization_action
+  - checkpoint: initialization_switch
+
+- story: write now after initialization
+  steps:
+  - checkpoint: initialization_switch
+  - intent: write_now
+  - action: answer_writing_action
+
+- story: discuss after initialization
+  steps:
+  - checkpoint: initialization_switch
+  - intent: discuss
+  - action: stance_inqury_action
+  - checkpoint: stance_inqury_started
+
+- story: no idea after initialization
+  steps:
+  - checkpoint: initialization_switch
+  - intent: no_idea
+  - action: encouragement_action
+  - action: stance_inqury_action
+  - checkpoint: stance_inqury_started
+
+- story: switch after stance inqury
+  steps: 
+  - checkpoint: stance_inqury_started
+  - intent: stance
+  - action: claim_center_suggestion_action
+  - intent: choose_claim_center
+  - action: keywords_selecting_action
+  - checkpoint: suggestion_switch
+
+- story: write now after suggestion
+  steps:
+  - checkpoint: suggestion_switch
+  - intent: write_now
+  - action: answer_writing_action
+
+- story: some idea after suggestion
+  steps:
+  - checkpoint: suggestion_switch
+  - intent: discuss
+  - action: ask_for_keywords_action
+  - intent: provide_keywords
+  - action: keywords_matching_action
+  - action: answer_writing_action
+
+- story: no idea after suggestion
+  steps:
+  - checkpoint: suggestion_switch
+  - intent: no_idea
+  - action: keywords_prompting_action
+  - action: answer_writing_action

@@ -1,0 +1,56 @@
+version: "3.1"
+
+intents:
+  - greet
+  - write_now
+  - discuss
+  - no_idea
+  - stance
+  - choose_claim_center
+  - provide_keywords
+
+entities:
+- StanceCategory
+- ChosenClaimCenter
+
+slots:
+  StanceCategory:
+      type: rasa.shared.core.slots.TextSlot
+      initial_value: NA
+      influence_conversation: false
+      mappings:
+      - type: from_entity
+        entity: StanceCategory
+  ChosenClaimCenter:
+      type: rasa.shared.core.slots.TextSlot
+      initial_value: NA
+      influence_conversation: false
+      mappings:
+      - type: from_entity
+        entity: ChosenClaimCenter
+
+responses:
+  utter_not_understand:
+  - text: "Sorry, I cannot understand what you mean."
+  
+  utter_rephrase:
+  - text: "For my better performance, could you please rephrase the words?"
+
+
+
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+
+actions:
+- greet_and_intro_action
+- initialization_action
+- answer_writing_action
+- stance_inqury_action
+- encouragement_action
+- claim_center_suggestion_action
+- keywords_matching_action
+- keywords_prompting_action
+- keywords_selecting_action
+- ask_for_keywords_action
+- default_fallback_action
