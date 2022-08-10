@@ -6,10 +6,18 @@ Frontend code for CHI2022 CQA-Lurker Project
 - [x] Clickable donuts chart segments
 - [x] Visualization of detail claim/premise after clicking donut segment
 - [x] Writing Pane
-- [ ] Chatbot Pane
+- [x] Chatbot Pane
 - [x] <del>Claim premise hover tooltip text</del>
 
 ### 2022-08-01
 - [x] Writing Pane default text value in textarea
-- [ ] Modal after clicking claim center
-- [ ] Scroll to original answer when clicking claim sentences in the modal
+- [x] Flipped view after clicking claim center
+- [x] Scroll to original answer when clicking claim sentences in the flipped view
+
+### 2022-08-10
+- [ ] tooltip of premise
+- [ ] frontend event interaction with chatbot
+- [ ] chatbot keyword prompting/matching function
+- [ ] chatbot positioning
+- [ ] evaluate function after writing
+- [ ] writing pane chatting history
