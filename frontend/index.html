@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="https://unpkg.com/jsmind@0.4.6/style/jsmind.css" integrity="sha256-bRaebMjWC2LwqX1p18fo00K/1Up8ltIu787l8MrlT/k=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://unpkg.com/colorjoe@4.1.1/css/colorjoe.css" integrity="sha256-1mVRjhKP/uP1dPmXtl9jUAs99aV+74wfnsuUSy4/gfs=" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://unpkg.com/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://unpkg.com/bootstrap-icons@1.9.0/font/bootstrap-icons.css">
   <link rel="stylesheet" href="style.css">
   <script src="https://unpkg.com/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -84,26 +84,71 @@
       <div class="col col-4 side">
         <div class="card" id="note-pane-card">
           <div class="card-header">
-            Navigation View
+            Navigation View > Claim Center Overview
+            <button type="button" class="btn btn-light" style="display:none" id="go-back-button" title="Back" onclick="flipNavigationView('claim-detail')">
+              <i class="bi bi-arrow-left-square"></i>
+            </button>
+
           </div>
           <div class="card-body" id="note-pane-card-body">
-            <div id = "chart-container"></div>
-            <div id = "claim-detail-list-container" style = "display: none;" display-claim-index = -1>
-              <ul class = 'list-group'>
-                <li class = "list-group-item"> qifei </li>
-                <li class = 'list-group-item'> hahaha </li>
-              </ul>
+            <div id="claim-center-overview-page">
+              <div id = "chart-container">
+                <!-- <div id="vertical-line" class="vertical-line"></div> -->
+                <div class="pct-bar js-pct-bar">
+                  <div id="percentage-bar-container">
+                    <div id="label-percentage-container" style="display: flex; text-align: center;">
+                      <span class='positive' style="flex-basis: 43%;">43%</span>
+                      <span class='neutral' style="flex-basis: 28%;">28%</span>
+                      <span class='negative' style="flex-basis: 29%;">29%</span>
+                    </div>
+                    <div class="pct-bar__bg js-pct-bar__bg po2-margin-bottom-md" aria-hidden="true">
+                    </div>
+                    <div id="label-text-container" style="display: flex; text-align: center;">
+                      <span class='positive' style="flex-basis: 43%;">Positive</span>
+                      <span class='neutral' style="flex-basis: 28%;">Neutral</span>
+                      <span class='negative' style="flex-basis: 29%;">Negative</span>
+                    </div>
+                  </div>
+                  <ul class="po2-grid po2-gap-xs" style="display: none;">
+                    <li class="po2-flex po2-items-center">
+                      <span class="pct-bar__bullet po2-bg-primary po2-margin-right-2xs" aria-hidden="true"></span>
+                      <span class="po2-text-sm">Positive (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-primary">43%</i>)</span>
+                    </li>
+                
+                    <li class="po2-flex po2-items-center">
+                      <span class="pct-bar__bullet po2-bg-contrast-low po2-margin-right-2xs" aria-hidden="true"></span>
+                      <span class="po2-text-sm">Neutral (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-contrast-low">28%</i>)</span>
+                    </li>
+                
+                    <li class="po2-flex po2-items-center">
+                      <span class="pct-bar__bullet po2-bg-accent po2-margin-right-2xs" aria-hidden="true"></span>
+                      <span class="po2-text-sm">Negative (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-accent">29%</i>)</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div id = "claim-center-list-container" style = "display: none;" display-claim-stance = "">
+                <span id="claim-center-list-title"></span>
+                <ul class = 'list-group'>
+                </ul>
+              </div>
+            </div>
+
+            <div id="claim-detail-page" style="display:none">
+              <div id="claim-detail-container">
+                <div id = "claim-list-container">
+                  <div id="claim-list-title" style="margin: 10px 0px 10px 0px;">Related Claims:</div>
+                  <ul class = 'list-group'>
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="card" id="chatbot-pane-card">
-          <div class="card-header">
-            Chatbot Pane
+        <!-- <div class="card" id="chatbot-pane-card">
+          <div id="chatbot-pane-card-body">
           </div>
-          <div id="concept-pane-card-body" class="card-body">
-            Chatbot Here
-          </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -124,9 +169,33 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="exampleFormControlTextarea1">Example textarea</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" placeholder="Write your post here"></textarea>
+            <label for="answerWritingArea">Example textarea</label>
+            <textarea class="form-control" id="answerTextarea" rows="10" placeholder="Write your post here"></textarea>
           </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary">
+            <i class="bi bi-robot"></i> Evaluate
+          </button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- chatbot widget  -->
+  <!-- <div id="rasa-chat-widget" data-websocket-url="http://localhost:5005/socket.io/" data-root-element-id = "chatbot-pane-card-body" data-default-open=true data-height=500></div>
+  <script src="https://unpkg.com/@rasahq/rasa-chat" type="application/javascript"></script> -->
+
+  <div class="modal fade" id="claimSentenceModal" tabindex="-1" aria-labelledby="claimSentenceModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header flex-wrap">
+          <h5 class="modal-title" id="claimSentenceModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <small class="modal-subtitle w-100 text-muted">Click any claim below to jump to its original answer</small>
+        </div>
+        <div class="modal-body">
+          <ul></ul>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -134,6 +203,8 @@
       </div>
     </div>
   </div>
+
+  
 
 
   <input type="file" id="upload-file-input" hidden/>

@@ -96,6 +96,7 @@ mark, .mark {
   overflow: auto;
   height: fit-content;
   width: 294;
+  max-height: 650px;
 }
 /* #note-pane-card > .card-body::-webkit-scrollbar,
 #concept-pane-card > .card-body::-webkit-scrollbar {
@@ -204,12 +205,12 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   }
 }
 
-.claim, .premise {
+.premise {
   position: relative;
   display: inline-block;
 }
 
-.claim .claim-detail, .premise .premise-detail {
+.premise .premise-detail {
   visibility: hidden;
   width: fit-content;
   background-color: rgb(185, 185, 185);
@@ -226,7 +227,7 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   font-weight: normal;
 }
 
-.claim .claim-detail::after, .premise .premise-detail::after {
+.premise .premise-detail::after {
   content: "";
   position: absolute;
   bottom: 100%;
@@ -238,7 +239,7 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   
 }
 
-.claim:hover .claim-detail, .premise:hover .premise-detail {
+.premise:hover .premise-detail {
   visibility: visible;
 }
 
@@ -248,3 +249,179 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   justify-content: space-evenly;
 }
 
+/* claim center list items */
+.claim-center{
+  cursor: pointer;
+}
+
+/* configuration for chatbot widget */
+.css-qmypsf.large{
+  display: block;
+}
+
+#rasa-chat-widget-container{
+  position: fixed;
+}
+
+/* percentage bar */
+
+
+/* variables */
+:root {
+  /* colors */
+  --po2-color-primary-hsl: 250, 84%, 54%;
+  --po2-color-bg-hsl: 0, 0%, 100%;
+  --po2-color-contrast-high-hsl: 230, 7%, 23%;
+  --po2-color-contrast-higher-hsl: 230, 13%, 9%;
+  --po2-color-accent-hsl: 342, 89%, 48%;
+  --po2-color-contrast-low-hsl: 240, 4%, 65%;
+
+  /* spacing */
+  --po2-space-2xs: 0.375rem;
+  --po2-space-xs: 0.5rem;
+  --po2-space-md: 1.25rem;
+
+  /* typography */
+  --po2-text-sm: 0.833rem;
+}
+
+@media(min-width: 64rem){
+  :root {
+    /* spacing */
+    --po2-space-2xs: 0.5625rem;
+    --po2-space-xs: 0.75rem;
+    --po2-space-md: 1rem;
+
+    /* typography */
+    --po2-text-sm: 1rem;
+  }
+}
+
+/* component */
+:root {
+  --pct-bar-height: 10px;
+  --pct-bar-radius: 50em;
+  --pct-bar-gap: 3px;
+  --pct-bar-legend-bullet-size: 10px;
+}
+
+
+.pct-bar__bullet {
+  display: block;
+  width: var(--pct-bar-legend-bullet-size);
+  height: var(--pct-bar-legend-bullet-size);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pct-bar__bg {
+  display: flex;
+  height: var(--pct-bar-height);
+  border-radius: var(--pct-bar-radius);
+  overflow: hidden;
+}
+
+.pct-bar__fill {
+  height: 100%;
+  margin-right: var(--pct-bar-gap);
+}
+.pct-bar__fill:first-child {
+  border-radius: var(--pct-bar-radius) 0 0 var(--pct-bar-radius);
+}
+.pct-bar__fill:last-child {
+  border-radius: 0 var(--pct-bar-radius) var(--pct-bar-radius) 0;
+  margin-right: 0;
+}
+
+/* utility classes */
+.po2-text-sm {
+  font-size: var(--po2-text-sm);
+}
+
+.po2-margin-right-2xs {
+  margin-right: var(--po2-space-2xs);
+}
+
+.po2-bg-accent {
+  --po2-bg-o: 1;
+  background-color: hsla(var(--po2-color-accent-hsl), var(--po2-bg-o, 1));
+}
+
+.po2-items-center {
+  align-items: center;
+}
+
+.po2-flex {
+  display: flex;
+}
+
+.po2-bg-contrast-higher {
+  --po2-bg-o: 1;
+  background-color: hsla(var(--po2-color-contrast-higher-hsl), var(--po2-bg-o, 1));
+}
+
+.po2-bg-contrast-low {
+  --po2-bg-o: 1;
+  background-color: hsla(var(--po2-color-contrast-low-hsl), var(--po2-bg-o, 1));
+}
+
+.po2-bg-primary {
+  --po2-bg-o: 1;
+  background-color: hsla(var(--po2-color-primary-hsl), var(--po2-bg-o, 1));
+}
+
+.po2-gap-xs {
+  gap: var(--po2-space-xs);
+}
+
+.po2-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+.po2-grid > * {
+  min-width: 0;
+  grid-column-end: span 12;
+}
+
+.po2-margin-bottom-md {
+  margin-bottom: var(--po2-space-md);
+  margin-top: var(--po2-space-md);
+}
+
+.pct-bar__fill:hover{
+  cursor: pointer;
+}
+
+/* claim detail page */
+
+.claim-detail:hover{
+  cursor: pointer;
+}
+
+
+/* vertical line indicating 50% in nav-view */
+.vertical-line {
+  position: fixed;
+  
+  border-left: 6px solid rgb(65, 65, 65);
+  height: 50px;
+}
+:root{
+  --premiseColor: #b3d9aa;
+  --positiveColor: #5185db;
+  --neutralColor: #b7b7b7;
+  --negativeColor: #dd6765;
+
+}
+/* stance text near percentage bar */
+
+.positive{
+  color: var(--positiveColor);
+}
+.negative{
+  color: var(--negativeColor)
+}
+.neutral{
+  color: var(--neutralColor)
+}
