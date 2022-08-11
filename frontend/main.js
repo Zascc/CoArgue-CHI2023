@@ -163,6 +163,10 @@ function initNavigationView(){
 
   // remove the labels below after loading the percentage bar
   document.querySelector('.po2-grid.po2-gap-xs').remove()
+  const verticalLine = document.createElement('div')
+  verticalLine.setAttribute('id', 'vertical-line')
+  verticalLine.classList.add('vertical-line')
+  document.querySelector('.pct-bar__bg').prepend(verticalLine)
 }
 
 

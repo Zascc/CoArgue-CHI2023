@@ -402,10 +402,12 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
 
 /* vertical line indicating 50% in nav-view */
 .vertical-line {
-  position: fixed;
+  position: absolute;
   
-  border-left: 6px solid rgb(65, 65, 65);
+  border-left: 3px solid rgb(65, 65, 65);
   height: 50px;
+  left: 50%;
+  top: 80px;
 }
 :root{
   --premiseColor: #b3d9aa;
