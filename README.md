@@ -18,6 +18,6 @@ Frontend code for CHI2022 CQA-Lurker Project
 - [ ] tooltip of premise
 - [ ] frontend event interaction with chatbot
 - [ ] chatbot keyword prompting/matching function
-- [ ] chatbot positioning
+- [x] chatbot positioning
 - [ ] evaluate function after writing
 - [ ] writing pane chatting history
