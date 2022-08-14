@@ -4,6 +4,7 @@ let [premiseColor, positiveColor, neutralColor, negativeColor] = ['#b3d9aa', '#5
 let answers; // 全局answers（应该不需要全局留着question吧）
 let writingModal;
 let claimSentenceModal;
+let userPost;
 
 function fetchPageData() {
   // const queryParams = new URLSearchParams(window.location.search)
@@ -45,20 +46,22 @@ function markClaimAndPremise(contextElement, sentencelist, answerIndex, sentence
       separateWordSearch: false,
       acrossElements: true,
       each(el){
-        // append tooltip if premise
+        // append tooltip if premise (This design is abandoned)
         if(sentenceCategory == 'premise'){
-          const tooptipSpan = document.createElement('span')
-          tooptipSpan.classList.add(`${sentenceCategory}-detail`)
-          tooptipSpan.innerHTML = `Testing Tooltip Text<br>Second row<br>This sentence is a ${sentenceCategory}`
-          el.appendChild(tooptipSpan)
+          // const tooptipSpan = document.createElement('span')
+          // tooptipSpan.classList.add(`${sentenceCategory}-detail`)
+          // tooptipSpan.innerHTML = `Testing Tooltip Text<br>Second row<br>This sentence is a ${sentenceCategory}`
+          // el.appendChild(tooptipSpan)
+          
         }
         el.setAttribute('answer-idx', answerIndex)
+        el.setAttribute(`${sentenceCategory}-idx`, sentenceIdx)
         let highlightColor = sentenceCategory == "claim" ? positiveColor : premiseColor
         if (sentenceCategory == 'claim'){
-          if(sentence.claimCenterPolarity == 'Neutral'){
+          if(sentence.claimSentiment == 'Neutral'){
             highlightColor = neutralColor
           }
-          else if(sentence.claimCenterPolarity == 'Negative'){
+          else if(sentence.claimSentiment == 'Negative'){
             highlightColor = negativeColor
           }
         }
@@ -97,26 +100,55 @@ function fetchClaimDetailList(claimIdx){
 function initWritingModal(){
   const writingModalEl = document.getElementById('writingModal')
   writingModal = new bootstrap.Modal(writingModalEl)
-  const textareaEl = writingModalEl.querySelector('#answerTextarea')
-  textareaEl.textContent = "Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nEu facilisis sed odio morbi quis commodo odio.\nNunc scelerisque viverra mauris in."
+
+  writingModalEl.addEventListener('show.bs.modal', e => {
+    const textareaEl = writingModalEl.querySelector('#answerTextarea')
+    if(!userPost){
+      const chatbotMessageEls = document.querySelector('.css-14otd4b').childNodes
+      let informationTextList = [];
+      chatbotMessageEls.forEach(p => {
+        const textContentOfP = p.querySelector("[data-qa='markdown-text']").textContent
+        if (p.querySelector("[data-qa='markdown-text']").textContent.includes("Information Data")){
+          informationTextList.push(textContentOfP)
+        }
+      })
+      // console.log(chatbotMessageEls.children)
+      // const chatbotMessageTexts = Array(chatbotMessageEls.childNodes).map(p => {
+      //   console.log(p)
+      //   return p.querySelector("[data-qa='markdown-text']").textContent
+      // })
+      let informationText;
+      if (informationTextList.length > 1){
+        informationText = informationTextList[-1]
+      }
+      else {
+        informationText = informationTextList[0]
+      }
+      const templateText = informationText
+      textareaEl.value = templateText
+    }
+    else{
+      textareaEl.value = userPost
+    }
+  })
 }
 
-function initClaimSentenceModal(){
-  const claimSentenceModalEl = document.getElementById('claimSentenceModal')
-  claimSentenceModal = new bootstrap.Modal(claimSentenceModalEl)
+// function initClaimSentenceModal(){
+//   const claimSentenceModalEl = document.getElementById('claimSentenceModal')
+//   claimSentenceModal = new bootstrap.Modal(claimSentenceModalEl)
 
 
-  claimSentenceModalEl.addEventListener('show.bs.modal', e => {
-    const claim = e.relatedTarget.textContent
-    console.log(claim)
-    const claimElList = answers.reduce((acc, cur, ansIdx) => [
-      ...acc,
-      ...cur.claim.map((el, elIdx) => {})
-    ], [])
-  })
+//   claimSentenceModalEl.addEventListener('show.bs.modal', e => {
+//     const claim = e.relatedTarget.textContent
+//     console.log(claim)
+//     const claimElList = answers.reduce((acc, cur, ansIdx) => [
+//       ...acc,
+//       ...cur.claim.map((el, elIdx) => {})
+//     ], [])
+//   })
 
   
-}
+// }
 
 
 
@@ -262,11 +294,11 @@ function displayClaimCenters(el){
   const stanceFirstLetter = stance[0].toUpperCase()
   const claimCenterEls = claimCenters.map((p, idx) => {
     const claimEl = document.createElement('li')
-    claimEl.innerHTML = `<span class='${stance}'>${stanceFirstLetter}C${idx+1}:</span> ${p}` // need to adjust the color to be in line with the stance color
+    claimEl.innerHTML = `<span class='${stance}'>${stanceFirstLetter}C${idx+1} :</span> ${p}` // need to adjust the color to be in line with the stance color
     claimEl.classList.add("claim-center", "list-group-item")
-    claimEl.setAttribute('claim-center-polarity', stance)
+    claimEl.setAttribute('claim-center-sentiment', stance)
     
-    
+    // <div class="progress"><div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div></div>
   
     return claimEl
   })
@@ -289,20 +321,68 @@ function displayClaimCenters(el){
   else{
     detailListContainer.style.setProperty('display', 'block')
     detailListContainer.setAttribute("display-claim-stance", stance)
-    el.style.border ='3px solid rgb(215, 215, 14)'
+    el.style.border ='2px solid rgb(215, 215, 14)'
   }
 }
+
+function initChatbot(){
+  const chatWidgetContainer = document.getElementById('rasa-chat-widget-container')
+  
+  const chatbotButton = chatWidgetContainer.querySelector('button.large.css-qmypsf')  // init展示 click button收起来 然后调数值展开
+  const chatbotBox = chatWidgetContainer.querySelector('div')
+  chatbotButton.click()
+  chatbotButton.style.display = 'none'
+  
+}
+
+function addChatBubbleElement(el){
+  const chatbotMessageEls = document.querySelector('.css-14otd4b') // all dialogue bubbles
+  const newMessage = document.createElement('div')
+
+  const chosenPremiseIdx = el.getAttribute('premise-idx')
+  const chosenAnsIdx = el.getAttribute('answer-idx')
+
+  let supportedClaimCenter = answers[chosenAnsIdx].premise[chosenPremiseIdx].supportClaim
+  let similarPremise = []
+  answers.forEach((ans, idx) => {
+    ans.premise.forEach(pre => {
+      if(pre.supportClaim == supportedClaimCenter){
+        similarPremise.push(idx)
+      }
+    })
+  })
+  let text = `It seems that you are interested in this premise. It is used to support the claim center '${supportedClaimCenter}'. Here are some other premises supporting the same claim center in` 
+  
+  similarPremise.forEach(idx => {
+    text += ` answer-${idx},`
+  })
+  text.slice(0, -1)
+  text += '. Click the buttons to jump to those answers.'
+  
+  let buttonsHTML = ''; // <div class="css-vurnku"><button data-btn="jump-button" class=" css-1aibqey">Jump to that answer</button></div>
+  similarPremise.forEach(idx => {
+    buttonsHTML += `<div class="css-vurnku"><button data-btn="jump-button" original-ans-idx="${idx}" class=" css-1aibqey">answer ${idx}</button></div>`
+  })
+  newMessage.innerHTML = `<div role="button" tabindex="0" data-e2e="EventContainer-bot-1660411092.834" id="" class="css-6es4cf"><div class="css-hu563a"><div class="css-463jce"><div class="css-jgse21"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="meh-blank" class="svg-inline--fa fa-meh-blank fa-w-16 css-1y53wuf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" style="width: 1em;"><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm-80 232c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm160 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"></path></svg></div></div><div class="css-19h6xf9"><div class="css-l3rx45" aria-describedby="tooltip-4" style="max-width: 320px;"><div data-qa="conversation-message-bubbles_div" class="css-1di2tiy"><div><span data-qa="markdown-text" class="css-8f4u10">${text}</span></div></div></div></div></div><div class="css-klsenx">${buttonsHTML}</div></div>`
+  chatbotMessageEls.append(newMessage)
+}
+
 
 
 // 等价于jQuery的 $.ready(...) 即 $(...)
 document.addEventListener('DOMContentLoaded', async () => {
   // 把和数据无关的UI init放到fetchPageData之前，防止用户看到尚未初始化的丑逼UI
   // initToTopButton()
+
+
+  
   initNavigationView()
   initWritingModal()
-  initClaimSentenceModal()
+  initChatbot()
   const res = await fetchPageData();
   const {question, description, relatedQuestions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
+
+
 
 
   // 加载问题
@@ -360,5 +440,19 @@ document.addEventListener('click', (e) => {
   else if (e.target.matches('.claim-detail')){
     const ansIdx = e.target.getAttribute('original-ans-idx')
     scrollIntoView(`.answer-outer.answer-${ansIdx}`)
+  }
+  else if (e.target.matches("[data-btn='jump-button']")){
+    // to do scrollInto that answer
+    const ansIdx = e.target.getAttribute('original-ans-idx')
+    scrollIntoView(`.answer-outer.answer-${ansIdx}`)
+  }
+  else if (e.target.matches('.premise')){
+    addChatBubbleElement(e.target)
+  }
+  else if (e.target.matches('#writing-modal-close-button')){
+    const writingModalEl = document.getElementById('writingModal')
+    const textareaEl = writingModalEl.querySelector('#answerTextarea')
+    userPost = textareaEl.value
+    writingModal.hide()
   }
 })

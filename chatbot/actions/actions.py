@@ -14,7 +14,10 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet, Restarted, SessionStarted, ActionExecuted, FollowupAction, AllSlotsReset, ReminderScheduled, UserUtteranceReverted
+import json
 import random
+import os
+
 
 
 class ActionDefaultFallback(Action):
@@ -48,9 +51,10 @@ class ActionGreetAndIntro(Action):
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
 
-        text = "Welcome! I am your ArgueMore tutor. Nice to meet you here! I have already gone through all the fascinating posts here and learned much from their sharings. I can't wait to create more valuable posts with you. I'm always ready for you. Let's go!"
-        
-        dispatcher.utter_message(text=text)
+        text = "Welcome! I am your ArgueMore tutor. Nice to meet you here! I have already gone through all the fascinating posts here and learned much from their sharings. I can't wait to create more valuable posts with you. I'm always ready for you. Let's go! If you **get ready to write something**, please click the button below or directly send 'start' to me."
+        buttons = []
+        buttons.append({'title': 'Start', 'payload': '/start'})
+        dispatcher.utter_message(text=text, buttons=buttons)
         return []
 
 
@@ -80,7 +84,7 @@ class ActionWriteNow(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        dispatcher.utter_message(text='You can start writing by clicking on the button "some comments words"')
+        dispatcher.utter_message(text='You can now start writing by clicking on the "Write Answer "button!')
         return []
 
 
@@ -110,7 +114,7 @@ class ActionEncouragement(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        text = "I know sometimes it's hard to start something from scratch. But I am a skillful tutor to help you convey your opinion step by step. I am definitely sure that your knowledge and experience will enrich our community. So, as the first step, you can tell me your attitude on the Bitcoin investment."
+        text = "I know sometimes it's hard to start something from scratch. But I am a skillful tutor to help you **convey your opinion step by step**. I am definitely sure that your knowledge and experience will **enrich our community**. So, as the first step, you can tell me your attitude on the Bitcoin investment."
         dispatcher.utter_message(text=text)
         return []
 
@@ -141,22 +145,22 @@ class ActionClaimSuggestion(Action):
         
         def extreme_claim_center_selector(x):
             return {
-                "positve": ["Of course you should", "I would say YES!"],
+                "positive": ["Of course you should", "I would say YES!"],
                 "neutral": ["Invest in Bitcoin, only if you are okay to loss all.", "The significant thing is to do your own research and comprehend the dangers."],
                 "negative": ["Bitcoin is pretty useless. But so is gold.", "Cryto currency is an extremely high-hazard venture, and CFDs bought on margin are significantly more hazardous."]
-            }
+            }[x]
         num_of_claim_center = num_of_claim_center_selector(stance)
 
         claim_center_list = claim_center_list_selector(stance)
 
-        highest_supported_claim_center, lowest_supported_claim_center = extreme_claim_center_selector(stance)
-        highest_supported_claim_center, lowest_supported_claim_center = "", ""
-        text = "Among the answers with a {} view, there is {} leading group of claims. '{}' claims are relatively well-discussed. However, '{}' claims have not been supported by sufficient premise and evidence. Which claim do you tend to develop more?".format(stance, num_of_claim_center, highest_supported_claim_center, lowest_supported_claim_center)
+        [highest_supported_claim_center, lowest_supported_claim_center] = extreme_claim_center_selector(stance)
+        # highest_supported_claim_center, lowest_supported_claim_center = "", ""
+        text = "Among the answers with a {} view, there is {} leading group of claims. **'{}' claims are relatively well-discussed**. However, **'{}' claims have not been supported by sufficient premise and evidence**. Which claim do you tend to develop more?".format(stance, num_of_claim_center, highest_supported_claim_center, lowest_supported_claim_center)
         dispatcher.utter_message(text=text)
         buttons = []
         text = ""
         for idx, el in enumerate(claim_center_list):
-            buttons.append({"title": "claim {}".format(idx), "payload": '/choose_claim_center{{"ChosenClaimCenter": "claim {}"}}'.format(idx)})
+            buttons.append({"title": "claim {}".format(idx), "payload": '/choose_claim_center{{"ChosenClaimCenter": "claim_{}"}}'.format(idx)})
             text += "claim {}: {}\n".format(idx, el)
         dispatcher.utter_message(text=text, buttons=buttons)
         return []
@@ -198,10 +202,24 @@ class ActionKeywordsMatching(Action):
     def run(self, dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        with open('./data/keywords.json', 'r') as f:
+            keywordsData = json.load(f)
+        stance = tracker.get_slot('StanceCategory').lower()
+        chosenClaimCenter = tracker.get_slot('ChosenClaimCenter')
+
+        keywordsList = keywordsData[stance][chosenClaimCenter]
+
+        lowFrequentKeywords = [keywordsList[-1][0], keywordsList[-2][0]]
+        highFrequentKeywords = [keywordsList[0][0], keywordsList[1][0]]
+        relatedKeywords = [i[0] for i in random.sample(keywordsList[2:-2], 2)]
         
-        text = "Wow, you are so thoughtful! These are promising points to create a good post. xxx, xxx have not been often mentioned before. (xxx, xxx have been mentioned in some posts, and xxx, xxx are some related keywords that you could consider.) I am confident that you can create a novel and fantastic post. I will wait for you in the writing pane!"
+        lowFrequentKeywordsText = '{}, {}'.format(*lowFrequentKeywords)
+        highFrequentKeywordsText = '{}, {}'.format(*highFrequentKeywords)
+        relatedKeywordsText = '{}, {}'.format(*relatedKeywords)
+        keywordsText = lowFrequentKeywordsText + highFrequentKeywordsText + relatedKeywordsText
+        text = "Wow, you are so thoughtful! These are promising points to create a good post. **{}** have not been often mentioned before. (**{}** have been mentioned in some posts, and **{}** are some related keywords that you could consider.) I am confident that you can create a novel and fantastic post. I will wait for you in the writing pane!".format(lowFrequentKeywordsText, highFrequentKeywordsText, relatedKeywordsText)
         dispatcher.utter_message(text=text)
-        return []
+        return [SlotSet("Keywords", keywordsText)]
 
 class ActionKeywordsPrompting(Action):
     def name(self) -> Text:
@@ -210,9 +228,41 @@ class ActionKeywordsPrompting(Action):
     def run(self, dispatcher: CollectingDispatcher,
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        
-        text = "Ok, I can share some of my thoughts with you. Regarding to this claim, you could say something about these topics: Hope that these suggestions will inspire to think more ideas! I will wait you in the writing pane!"
+        with open('./data/keywords.json', 'r') as f:
+            keywordsData = json.load(f)
+        stance = tracker.get_slot('StanceCategory').lower()
+        chosenClaimCenter = tracker.get_slot('ChosenClaimCenter')
+
+        keywordsList = keywordsData[stance][chosenClaimCenter]
+        sampleKeywords = random.sample(keywordsList, 4)
+
+        keywordsTextList = [i[0] for i in sampleKeywords]
+        keywordsText = '{}, {}, {}, {}'.format(*keywordsTextList)
+        text = "Ok, I can share some of my thoughts with you. Regarding to this claim, you could say something about these topics:\n**{}**\nHope that these suggestions will inspire to think more ideas! I will wait you in the writing pane!".format(keywordsText)
         buttons = []
         buttons.append({"title":'Write now!', "payload": 'Write now!'})
+        dispatcher.utter_message(text=text)
+        return [SlotSet("Keywords", keywordsText)]
+
+class ActionInfoDisplaying(Action):
+    def name(self) -> Text:
+        return "info_displaying_action"
+
+    def run(self, dispatcher: CollectingDispatcher,
+        tracker: Tracker,
+        domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        def claim_center_list_selector(x):
+            return {
+                "positive": ["I would say YES!", "Of course you should"],
+                "neutral": ["It’s not too late to invest.", "That’s up to you.", "It depends what your level of disposable income is, how great your assets are, and what other assets you have invested in.", "The significant thing is to do your own research and comprehend the dangers.", "Invest in Bitcoin, only if you are okay to loss all.", "Investing in Bitcoin is viable option especially in a view of current decline of the power of Fiat currencies.", "If you are willing to take the risk, first make sure you understand what you are investing in and have a crypto investment strategy"],
+                "negative": ["Bitcoin is pretty useless. But so is gold.", "Cryto currency is an extremely high-hazard venture, and CFDs bought on margin are significantly more hazardous.", "It is almost certainly in a bubble."]
+            }[x]
+
+        stance = tracker.get_slot('StanceCategory').lower()
+        chosenClaimCenter = claim_center_list_selector(stance)[int(tracker.get_slot('ChosenClaimCenter')[-1:])]
+        keywords = tracker.get_slot('Keywords')
+        text = "Information Data: \nMy attitude towards investing in Bitcoin is {}. For the bitcoin topic, I agree with the view that '{}'. My argument mainly has the following aspects: {}.".format(stance, chosenClaimCenter, keywords)
+
         dispatcher.utter_message(text=text)
         return []

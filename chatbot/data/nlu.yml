@@ -51,3 +51,9 @@ nlu:
   examples: |
     - keywords: 
     - Keywords: 
+- intent: start
+  examples: |
+    - start
+    - Start
+    - Begin
+    - begin

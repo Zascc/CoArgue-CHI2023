@@ -96,7 +96,7 @@ mark, .mark {
   overflow: auto;
   height: fit-content;
   width: 294;
-  max-height: 650px;
+  max-height: 35vh;
 }
 /* #note-pane-card > .card-body::-webkit-scrollbar,
 #concept-pane-card > .card-body::-webkit-scrollbar {
@@ -205,12 +205,11 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   }
 }
 
-.premise {
-  position: relative;
-  display: inline-block;
+.premise:hover {
+  cursor: pointer;
 }
 
-.premise .premise-detail {
+/* .premise .premise-detail {
   visibility: hidden;
   width: fit-content;
   background-color: rgb(185, 185, 185);
@@ -241,7 +240,7 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
 
 .premise:hover .premise-detail {
   visibility: visible;
-}
+} */
 
 /* question container and writing button */
 #question-content-container {
@@ -254,13 +253,17 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   cursor: pointer;
 }
 
-/* configuration for chatbot widget */
-.css-qmypsf.large{
-  display: block;
-}
 
 #rasa-chat-widget-container{
-  position: fixed;
+  position: sticky;
+}
+
+#rasa-chat-widget-container > div:first-child {
+  height: 350px !important;
+  width: 100% !important;
+  border-style: solid !important;
+  margin-bottom: 0px !important;
+  /* font-size: 20px; */
 }
 
 /* percentage bar */
@@ -404,8 +407,8 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
 .vertical-line {
   position: absolute;
   
-  border-left: 3px solid rgb(65, 65, 65);
-  height: 50px;
+  border-left: 2px solid rgb(65, 65, 65);
+  height: 40px;
   left: 50%;
   top: 80px;
 }

@@ -1,47 +1,44 @@
-version: "3.1"
-
-intents:
-  - greet
-  - write_now
-  - discuss
-  - no_idea
-  - stance
-  - choose_claim_center
-  - provide_keywords
-
-entities:
-- StanceCategory
-- ChosenClaimCenter
-
-slots:
-  StanceCategory:
-      type: rasa.shared.core.slots.TextSlot
-      initial_value: NA
-      influence_conversation: false
-      mappings:
-      - type: from_entity
-        entity: StanceCategory
-  ChosenClaimCenter:
-      type: rasa.shared.core.slots.TextSlot
-      initial_value: NA
-      influence_conversation: false
-      mappings:
-      - type: from_entity
-        entity: ChosenClaimCenter
-
-responses:
-  utter_not_understand:
-  - text: "Sorry, I cannot understand what you mean."
-  
-  utter_rephrase:
-  - text: "For my better performance, could you please rephrase the words?"
-
-
-
+version: '3.0'
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
-
+intents:
+- greet
+- write_now
+- discuss
+- no_idea
+- stance
+- choose_claim_center
+- provide_keywords
+entities:
+- StanceCategory
+- ChosenClaimCenter
+slots:
+  StanceCategory:
+    type: text
+    initial_value: NA
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: StanceCategory
+  ChosenClaimCenter:
+    type: text
+    initial_value: NA
+    influence_conversation: false
+    mappings:
+    - type: from_entity
+      entity: ChosenClaimCenter
+  Keywords:
+    type: text
+    initial_value: NA
+    influence_conversation: false
+    mappings:
+    - type: custom
+responses:
+  utter_not_understand:
+  - text: Sorry, I cannot understand what you mean.
+  utter_rephrase:
+  - text: For my better performance, could you please rephrase the words?
 actions:
 - greet_and_intro_action
 - initialization_action
@@ -54,3 +51,4 @@ actions:
 - keywords_selecting_action
 - ask_for_keywords_action
 - default_fallback_action
+- info_displaying_action

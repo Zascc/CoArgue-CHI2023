@@ -17,6 +17,8 @@
   <script src="https://unpkg.com/dayjs@1.10.5/dayjs.min.js" integrity="sha256-v+HEJfGs5a3wK8/uqXs31dH/xcyJDf21m0AuZUWP3PA=" crossorigin="anonymous" defer></script>
   <script src="https://unpkg.com/sortablejs@latest/Sortable.min.js" defer></script>
   <script src="https://cdn.plot.ly/plotly-2.12.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.socket.io/4.5.0/socket.io.min.js" integrity="sha384-7EyYLQZgWBi67fBtVxw60/OWl1kjsfrPFcaU0pp0nAh+i8FD068QogUvg85Ewy1k" crossorigin="anonymous"></script>
   <!-- <script src="https://unpkg.com/lodash@4/lodash.min.js"></script> -->
   <script src="https://unpkg.com/jsmind@0.4.6/js/jsmind.js" integrity="sha256-R+mzTkztiO+RQCSXTWATMB3H5nOI7rvDYMmlAawMdXY=" crossorigin="anonymous" defer></script>
   <script src="https://unpkg.com/split.js@1.6.4/dist/split.min.js" integrity="sha256-3dj5QuMIOFU/bn4buiCQsVULDPjncXio3emedCODG+I=" crossorigin="anonymous" defer></script>
@@ -27,6 +29,7 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <!-- colorjoe.css overrides a .container style -->
+
   <div class="container outer overflow-visible">
     <div class="row gy-3 justify-content-center align-items-start">
       <div class="col col-6">
@@ -97,32 +100,32 @@
                 <div class="pct-bar js-pct-bar">
                   <div id="percentage-bar-container">
                     <div id="label-percentage-container" style="display: flex; text-align: center;">
-                      <span class='positive' style="flex-basis: 43%;">43%</span>
-                      <span class='neutral' style="flex-basis: 28%;">28%</span>
-                      <span class='negative' style="flex-basis: 29%;">29%</span>
+                      <span class='positive' style="flex-basis: 10%;">10%</span>
+                      <span class='neutral' style="flex-basis: 75%;">75%</span>
+                      <span class='negative' style="flex-basis: 15%;">15%</span>
                     </div>
                     <div class="pct-bar__bg js-pct-bar__bg po2-margin-bottom-md" aria-hidden="true">
                     </div>
                     <div id="label-text-container" style="display: flex; text-align: center;">
-                      <span class='positive' style="flex-basis: 43%;">Positive</span>
-                      <span class='neutral' style="flex-basis: 28%;">Neutral</span>
-                      <span class='negative' style="flex-basis: 29%;">Negative</span>
+                      <span class='positive' style="flex-basis: 10%;">Positive</span>
+                      <span class='neutral' style="flex-basis: 75%;">Neutral</span>
+                      <span class='negative' style="flex-basis: 15%;">Negative</span>
                     </div>
                   </div>
                   <ul class="po2-grid po2-gap-xs" style="display: none;">
                     <li class="po2-flex po2-items-center">
                       <span class="pct-bar__bullet po2-bg-primary po2-margin-right-2xs" aria-hidden="true"></span>
-                      <span class="po2-text-sm">Positive (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-primary">43%</i>)</span>
+                      <span class="po2-text-sm">Positive (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-primary">10%</i>)</span>
                     </li>
                 
                     <li class="po2-flex po2-items-center">
                       <span class="pct-bar__bullet po2-bg-contrast-low po2-margin-right-2xs" aria-hidden="true"></span>
-                      <span class="po2-text-sm">Neutral (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-contrast-low">28%</i>)</span>
+                      <span class="po2-text-sm">Neutral (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-contrast-low">75%</i>)</span>
                     </li>
                 
                     <li class="po2-flex po2-items-center">
                       <span class="pct-bar__bullet po2-bg-accent po2-margin-right-2xs" aria-hidden="true"></span>
-                      <span class="po2-text-sm">Negative (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-accent">29%</i>)</span>
+                      <span class="po2-text-sm">Negative (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-accent">15%</i>)</span>
                     </li>
                   </ul>
                 </div>
@@ -145,10 +148,13 @@
             </div>
           </div>
         </div>
-        <!-- <div class="card" id="chatbot-pane-card">
+        <div class="card" id="chatbot-pane-card">
+          <div class="card-header">
+            Chatbot Tutor
+          </div>
           <div id="chatbot-pane-card-body">
           </div>
-        </div> -->
+        </div>
       </div>
     </div>
   </div>
@@ -165,7 +171,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="writingModalLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" id='writing-modal-close-button' class="btn-close" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
@@ -174,38 +180,16 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">
-            <i class="bi bi-robot"></i> Evaluate
-          </button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Post</button>
+          <button type="button" class="btn btn-primary">Post</button>
         </div>
       </div>
     </div>
   </div>
   <!-- chatbot widget  -->
-  <!-- <div id="rasa-chat-widget" data-websocket-url="http://localhost:5005/socket.io/" data-root-element-id = "chatbot-pane-card-body" data-default-open=true data-height=500></div>
-  <script src="https://unpkg.com/@rasahq/rasa-chat" type="application/javascript"></script> -->
-
-  <div class="modal fade" id="claimSentenceModal" tabindex="-1" aria-labelledby="claimSentenceModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header flex-wrap">
-          <h5 class="modal-title" id="claimSentenceModalLabel">Modal title</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          <small class="modal-subtitle w-100 text-muted">Click any claim below to jump to its original answer</small>
-        </div>
-        <div class="modal-body">
-          <ul></ul>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div id="rasa-chat-widget" data-websocket-url="http://localhost:5005" data-root-element-id = "chatbot-pane-card-body" data-default-open=true data-height=500 data-initial-payload ="hello" ></div>
+  <script src="https://unpkg.com/@rasahq/rasa-chat" type="application/javascript"></script>
 
   
-
 
   <input type="file" id="upload-file-input" hidden/>
   <div id="uploaded-json" style="display: none;"></div>

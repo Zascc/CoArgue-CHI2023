@@ -6,6 +6,7 @@ stories:
   steps:
   - intent: greet
   - action: greet_and_intro_action
+  - intent: start
   - action: initialization_action
   - checkpoint: initialization_switch
 
@@ -14,6 +15,7 @@ stories:
   - checkpoint: initialization_switch
   - intent: write_now
   - action: answer_writing_action
+  - action: info_displaying_action
 
 - story: discuss after initialization
   steps:
@@ -44,6 +46,7 @@ stories:
   - checkpoint: suggestion_switch
   - intent: write_now
   - action: answer_writing_action
+  - action: info_displaying_action
 
 - story: some idea after suggestion
   steps:
@@ -53,6 +56,7 @@ stories:
   - intent: provide_keywords
   - action: keywords_matching_action
   - action: answer_writing_action
+  - action: info_displaying_action
 
 - story: no idea after suggestion
   steps:
@@ -60,3 +64,4 @@ stories:
   - intent: no_idea
   - action: keywords_prompting_action
   - action: answer_writing_action
+  - action: info_displaying_action
