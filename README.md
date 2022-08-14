@@ -15,9 +15,9 @@ Frontend code for CHI2022 CQA-Lurker Project
 - [x] Scroll to original answer when clicking claim sentences in the flipped view
 
 ### 2022-08-10
-- [ ] tooltip of premise
-- [ ] frontend event interaction with chatbot
+- [x] tooltip of premise
+- [x] frontend event interaction with chatbot (in a brute false pseudo way)
 - [ ] chatbot keyword prompting/matching function
 - [x] chatbot positioning
 - [ ] evaluate function after writing
-- [ ] writing pane chatting history
+- [x] writing pane chatting history
