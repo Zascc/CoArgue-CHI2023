@@ -17,7 +17,7 @@ Frontend code for CHI2022 CQA-Lurker Project
 ### 2022-08-10
 - [x] tooltip of premise
 - [x] frontend event interaction with chatbot (in a brute false pseudo way)
-- [ ] chatbot keyword prompting/matching function
+- [x] chatbot keyword prompting/matching function
 - [x] chatbot positioning
-- [ ] evaluate function after writing
+- [ ] posting function after writing
 - [x] writing pane chatting history
