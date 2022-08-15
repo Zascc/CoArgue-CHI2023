@@ -260,7 +260,11 @@ class ActionInfoDisplaying(Action):
             }[x]
 
         stance = tracker.get_slot('StanceCategory').lower()
-        chosenClaimCenter = claim_center_list_selector(stance)[int(tracker.get_slot('ChosenClaimCenter')[-1:])]
+        if(stance != 'na'):
+            chosenClaimCenter = claim_center_list_selector(stance)[int(tracker.get_slot('ChosenClaimCenter')[-1:])]
+        else:
+            chosenClaimCenter = 'na'
+        
         keywords = tracker.get_slot('Keywords')
         text = "Information Data: \nMy attitude towards investing in Bitcoin is {}. For the bitcoin topic, I agree with the view that '{}'. My argument mainly has the following aspects: {}.".format(stance, chosenClaimCenter, keywords)
 

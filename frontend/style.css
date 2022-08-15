@@ -152,7 +152,7 @@ mark, .mark {
 #back-to-top {
   position: fixed;
   bottom: 3rem;
-  right: 3rem;
+  left: 3rem;
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -429,4 +429,66 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
 }
 .neutral{
   color: var(--neutralColor)
+}
+
+/* styling for greying out the whole page */
+
+#grayout {
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: black;
+  opacity: 0.5;
+  z-index: 9999;
+  display: none;
+}
+
+#final-words-container {
+  position: fixed;
+  top: 60%;
+  left: 15%;
+  height: auto;
+  width: 70%;
+  background-color: rgb(204, 204, 204);
+  color: black;
+  opacity: 1;
+  z-index: 10000;
+  /* border: 3px solid; */
+  border-radius: 30px;
+  display: none;
+
+}
+
+.final-text{
+  margin: 20px;
+}
+
+#final-buttons-container{
+  display: flex;
+  justify-content: space-evenly;
+  margin: 10px;
+}
+
+#trophy-container{
+  position: fixed;
+  top: 15%;
+  height: 90%;
+  width: 80%;
+  color: black;
+  opacity: 1;
+  z-index: 10000;
+  left: 10%;
+  /* border: 3px solid; */
+  border-radius: 30px;
+  display: none;
+}
+.trophy-img{
+  height: auto; 
+  width: auto; 
+  max-width: 40%; 
+  max-height: 40%;
+  position: relative;
+  left: 40%;
 }

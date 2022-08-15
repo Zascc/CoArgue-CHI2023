@@ -126,6 +126,9 @@ function initWritingModal(){
       }
       const templateText = informationText
       textareaEl.value = templateText
+      if(!templateText){
+        textareaEl.value = ''
+      }
     }
     else{
       textareaEl.value = userPost
@@ -133,22 +136,6 @@ function initWritingModal(){
   })
 }
 
-// function initClaimSentenceModal(){
-//   const claimSentenceModalEl = document.getElementById('claimSentenceModal')
-//   claimSentenceModal = new bootstrap.Modal(claimSentenceModalEl)
-
-
-//   claimSentenceModalEl.addEventListener('show.bs.modal', e => {
-//     const claim = e.relatedTarget.textContent
-//     console.log(claim)
-//     const claimElList = answers.reduce((acc, cur, ansIdx) => [
-//       ...acc,
-//       ...cur.claim.map((el, elIdx) => {})
-//     ], [])
-//   })
-
-  
-// }
 
 
 
@@ -294,7 +281,7 @@ function displayClaimCenters(el){
   const stanceFirstLetter = stance[0].toUpperCase()
   const claimCenterEls = claimCenters.map((p, idx) => {
     const claimEl = document.createElement('li')
-    claimEl.innerHTML = `<span class='${stance}'>${stanceFirstLetter}C${idx+1} :</span> ${p}` // need to adjust the color to be in line with the stance color
+    claimEl.innerHTML = `<span class='${stance}'>${stanceFirstLetter}C${idx+1} :</span>${p}` // need to adjust the color to be in line with the stance color
     claimEl.classList.add("claim-center", "list-group-item")
     claimEl.setAttribute('claim-center-sentiment', stance)
     
@@ -313,7 +300,7 @@ function displayClaimCenters(el){
   claimCenterListTitle.textContent = `${stanceFirstLetter}${stance.slice(1)} claims` 
   claimCenterListTitle.removeAttribute('class')
   claimCenterListTitle.classList.add(`${stance}`)
-  // TODO: set the color of the claimCenterListTitle
+
   if(detailListContainer.style.getPropertyValue('display') == 'block' && detailListContainer.getAttribute('display-claim-stance') == stance){
     detailListContainer.style.setProperty('display', 'none')
     el.style.border = null
@@ -342,12 +329,18 @@ function addChatBubbleElement(el){
   const chosenPremiseIdx = el.getAttribute('premise-idx')
   const chosenAnsIdx = el.getAttribute('answer-idx')
 
-  let supportedClaimCenter = answers[chosenAnsIdx].premise[chosenPremiseIdx].supportClaim
+  let supportedClaimCenter = answers[chosenAnsIdx].premise[chosenPremiseIdx].supportClaimCenter
   let similarPremise = []
   answers.forEach((ans, idx) => {
     ans.premise.forEach(pre => {
-      if(pre.supportClaim == supportedClaimCenter){
-        similarPremise.push(idx)
+      if(pre.supportClaimCenter == supportedClaimCenter){
+        if(similarPremise.includes(idx) || idx == chosenAnsIdx){
+        }
+        else{
+          similarPremise.push(idx)
+        }
+        
+        
       }
     })
   })
@@ -367,15 +360,49 @@ function addChatBubbleElement(el){
   chatbotMessageEls.append(newMessage)
 }
 
+function handlePostClicked(){
+  // grey out the whole page and show the final trophy
+  
+  const writingModalEl = document.getElementById('writingModal')
+  const textareaEl = writingModalEl.querySelector('#answerTextarea')
+  userPost = textareaEl.value
+  
+  writingModal.hide()
+  const finalWordsContainer = document.getElementById('final-words-container')
+  const finalTextEl = finalWordsContainer.querySelector('.final-text')
+  let text = `Thanks for your sharing! After reading your post, I feel more confident about the Bitcoin topic. <br> <br>Considering your stance, there is a 3% increase in the stance group. Your reasonable premise also increases the supportiveness of the stance group by 4%. <br> <br>I'm pretty sure more and more people will learn a lot from your novel and fascinating answer!`;
+  finalTextEl.innerHTML = text
+
+  const grayoutEl = document.getElementById('grayout')
+  const finalPopupContainer = document.getElementById('final-words-container')
+  const trophyContainer = document.getElementById('trophy-container')
+  grayoutEl.style.display = 'block'
+  finalPopupContainer.style.display = 'block'
+  trophyContainer.style.display = 'block'
+  
+}
+
+function OnFinishClicked(){
+  const grayoutEl = document.getElementById('grayout')
+  const finalPopupContainer = document.getElementById('final-words-container')
+  const trophyContainer = document.getElementById('trophy-container')
+  grayoutEl.style.display = 'none'
+  finalPopupContainer.style.display = 'none'
+  trophyContainer.style.display = 'none'
+  userPost = ''
+}
+
+function OnUpdateAnswerClicked(){
+  OnFinishClicked()
+  writingModal.show()
+}
 
 
 // 等价于jQuery的 $.ready(...) 即 $(...)
 document.addEventListener('DOMContentLoaded', async () => {
   // 把和数据无关的UI init放到fetchPageData之前，防止用户看到尚未初始化的丑逼UI
-  // initToTopButton()
-
-
   
+  initToTopButton()
   initNavigationView()
   initWritingModal()
   initChatbot()
@@ -454,5 +481,8 @@ document.addEventListener('click', (e) => {
     const textareaEl = writingModalEl.querySelector('#answerTextarea')
     userPost = textareaEl.value
     writingModal.hide()
+  }
+  else if (e.target.matches('#post-button')){
+    handlePostClicked()
   }
 })

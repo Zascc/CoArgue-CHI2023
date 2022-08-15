@@ -29,7 +29,7 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <!-- colorjoe.css overrides a .container style -->
-
+  
   <div class="container outer overflow-visible">
     <div class="row gy-3 justify-content-center align-items-start">
       <div class="col col-6">
@@ -180,9 +180,24 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary">Post</button>
+          <button id="post-button" type="button" class="btn btn-primary">Post</button>
         </div>
       </div>
+    </div>
+  </div>
+  
+  <div id="grayout"></div>
+
+  <div id="trophy-container">
+    <img class='trophy-img' src="https://img-bsy.txrpic.com/preview/Element/00/00/76/53/E-765396-1945A8EE3.png?imageMogr2/quality/90/thumbnail/!800x%3E">
+  </div>
+  
+  <div id="final-words-container">
+    <div class="final-text">
+    </div>
+    <div id="final-buttons-container">
+      <button type="button" id="update-answer-button" class="btn btn-primary" onclick="OnUpdateAnswerClicked()">Update Answer</button>
+      <button type="button" id="finish-button" class="btn btn-primary" onclick="OnFinishClicked()">Finish</button>
     </div>
   </div>
   <!-- chatbot widget  -->
