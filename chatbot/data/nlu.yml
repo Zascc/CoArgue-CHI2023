@@ -57,3 +57,16 @@ nlu:
     - Start
     - Begin
     - begin
+
+- intent: restart_session
+  examples: |
+    - restart
+    - restart session
+
+- intent: choose_stance_again
+  examples: |
+    - choose stance again
+
+- intent: not_interested
+  examples: |
+    - not interested

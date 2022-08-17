@@ -6,3 +6,8 @@ rules:
   - intent: nlu_fallback
   - action: utter_not_understand
   - action: utter_rephrase
+
+# - rule: restart after clicking on restart button
+#   steps:
+#   - intent: restart_session
+#   - action: action_restart

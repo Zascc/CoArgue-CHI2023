@@ -32,14 +32,35 @@ stories:
   - action: stance_inqury_action
   - checkpoint: stance_inqury_started
 
-- story: switch after stance inqury
+- story: switch choose claim center after stance inqury
   steps: 
   - checkpoint: stance_inqury_started
   - intent: stance
   - action: claim_center_suggestion_action
+  - checkpoint: choose_claim_switch
+
+- story: not interested after suggestion
+  steps:
+  - checkpoint: choose_claim_switch
+  - intent: not_interested
+  - action: claim_center_suggestion_action
+  - checkpoint: choose_claim_switch
+
+- story: great after suggestion
+  steps:
+  - checkpoint: choose_claim_switch
   - intent: choose_claim_center
   - action: keywords_selecting_action
   - checkpoint: suggestion_switch
+
+- story: choose stance again after suggestion
+  steps:
+  - checkpoint: choose_claim_switch
+  - intent: choose_stance_again
+  - action: stance_inqury_action
+  - checkpoint: stance_inqury_started
+
+
 
 - story: write now after suggestion
   steps:
@@ -55,6 +76,7 @@ stories:
   - action: ask_for_keywords_action
   - intent: provide_keywords
   - action: keywords_matching_action
+  - intent: write_now
   - action: answer_writing_action
   - action: info_displaying_action
 
@@ -63,5 +85,6 @@ stories:
   - checkpoint: suggestion_switch
   - intent: no_idea
   - action: keywords_prompting_action
+  - intent: write_now
   - action: answer_writing_action
   - action: info_displaying_action

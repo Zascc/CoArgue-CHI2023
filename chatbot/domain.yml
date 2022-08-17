@@ -10,6 +10,10 @@ intents:
 - stance
 - choose_claim_center
 - provide_keywords
+- not_interested
+- restart_session
+- start
+- choose_stance_again
 entities:
 - StanceCategory
 - ChosenClaimCenter
@@ -34,11 +38,22 @@ slots:
     influence_conversation: false
     mappings:
     - type: custom
+  ClaimIndex:
+    type: text
+    initial_value: 0
+    influence_conversation: false
+    mappings:
+    - type: custom
 responses:
   utter_not_understand:
   - text: Sorry, I cannot understand what you mean.
   utter_rephrase:
   - text: For my better performance, could you please rephrase the words?
+  utter_restart:
+  - text: Hi, I have read all the answer posts to be knowledgeable but I cannot be as creative as you with my awkward mind. Let’s contribute something amazing together!
+    buttons:
+    - title: "Start"
+      payload: "/start"
 actions:
 - greet_and_intro_action
 - initialization_action

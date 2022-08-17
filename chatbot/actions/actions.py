@@ -51,7 +51,7 @@ class ActionGreetAndIntro(Action):
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
 
-        text = "Welcome! I am your ArgueMore tutor. Nice to meet you here! I have already gone through all the fascinating posts here and learned much from their sharings. I can't wait to create more valuable posts with you. I'm always ready for you. Let's go! If you **get ready to write something**, please click the button below or directly send 'start' to me."
+        text = "Hi, I have read all the answer posts to be knowledgeable but I cannot be as creative as you with my awkward mind. Let’s contribute something amazing together!"
         buttons = []
         buttons.append({'title': 'Start', 'payload': '/start'})
         dispatcher.utter_message(text=text, buttons=buttons)
@@ -68,10 +68,10 @@ class ActionInitialization(Action):
 
 
         buttons = []
-        buttons.append({"title": 'Write now' , "payload": 'Write now'})
-        buttons.append({"title": 'Discuss', "payload": 'Discuss'})
-        buttons.append({"title": 'Give up', "payload": 'no idea'})
-        text = "Bitcoin is a hot and fascinating topic. After seeing other friends’ opinions here, do you want to express your unique and valuable opinion? I am also interested in this topic and looking forward to more novel perspectives. If you are not sure how to share your ideas efficiently in our community, don’t hesitate to talk with me :) "
+        buttons.append({"title": 'Write now' , "payload": '/write_now'})
+        buttons.append({"title": 'Explore', "payload": '/discuss'})
+        buttons.append({"title": 'Not now', "payload": '/no_idea'})
+        text = "Already got something in mind? Share with me to clear your concerns!"
         
         dispatcher.utter_message(text=text, buttons=buttons)
         return []
@@ -102,7 +102,7 @@ class ActionStanceInqury(Action):
         buttons.append({"title": 'Negative', "payload": 'Negative'})
         
         dispatcher.utter_message(text='What’s your attitude on the Bitcoin investment?', buttons=buttons)
-        return []
+        return [SlotSet('ClaimIndex', '0')]
 
         
 
@@ -114,7 +114,7 @@ class ActionEncouragement(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        text = "I know sometimes it's hard to start something from scratch. But I am a skillful tutor to help you **convey your opinion step by step**. I am definitely sure that your knowledge and experience will **enrich our community**. So, as the first step, you can tell me your attitude on the Bitcoin investment."
+        text = "I do understand the difficulties to create something meaningful as my mind is restricted by the algorithms. But together, with your true potential, we can achieve something significant! To take the first step, just tell me your attitude on the Bitcoin investment."
         dispatcher.utter_message(text=text)
         return []
 
@@ -127,6 +127,8 @@ class ActionClaimSuggestion(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         stance = tracker.get_slot("StanceCategory").lower()
+        claimIdx = int(tracker.get_slot('ClaimIndex'))
+
         if(stance not in ["positive", "neutral", "negative"]):
             dispatcher.utter_message(text = "Hmm, I cannot understand your stance. I guess you want to choose stance 'positive'")
             stance = "positive"
@@ -154,16 +156,26 @@ class ActionClaimSuggestion(Action):
         claim_center_list = claim_center_list_selector(stance)
 
         [highest_supported_claim_center, lowest_supported_claim_center] = extreme_claim_center_selector(stance)
-        # highest_supported_claim_center, lowest_supported_claim_center = "", ""
-        text = "Among the answers with a {} view, there is {} leading group of claims. **'{}' claims are relatively well-discussed**. However, **'{}' claims have not been supported by sufficient premise and evidence**. Which claim do you tend to develop more?".format(stance, num_of_claim_center, highest_supported_claim_center, lowest_supported_claim_center)
-        dispatcher.utter_message(text=text)
+        claimThisRound = claim_center_list[claimIdx]
+
         buttons = []
-        text = ""
-        for idx, el in enumerate(claim_center_list):
-            buttons.append({"title": "claim {}".format(idx), "payload": '/choose_claim_center{{"ChosenClaimCenter": "claim_{}"}}'.format(idx)})
-            text += "claim {}: {}\n".format(idx, el)
+        buttons.append({"title": "Great!", "payload": '/choose_claim_center{{"ChosenClaimCenter": "claim_{}"}}'.format(claimIdx)})
+        buttons.append({"title": "Not interested", "payload": '/not_interested'})
+
+        if(claimIdx == 0):
+            text = "In this case, I found **'{}'** claims are not supported sufficiently. Would you like to try this?".format(claimThisRound)
+        if(claimIdx == (len(claim_center_list) - 1)):
+            text = "Then how about **'{}'** claims?".format(claimThisRound)
+            buttons.pop()
+            claimIdx = -1
+        else:
+            text = "Then how about **'{}'** claims?".format(claimThisRound)
+        buttons.append({'title': 'Choose stance again', "payload": '/choose_stance_again'})
+        # for idx, el in enumerate(claim_center_list):
+        #     buttons.append({"title": "claim {}".format(idx), "payload": '/choose_claim_center{{"ChosenClaimCenter": "claim_{}"}}'.format(idx)})
+        #     text += "claim {}: {}\n".format(idx, el)
         dispatcher.utter_message(text=text, buttons=buttons)
-        return []
+        return [SlotSet('ClaimIndex', str(claimIdx + 1))]
 
 class ActionKeywordsSelecting(Action):
     def name(self) -> Text:
@@ -173,11 +185,11 @@ class ActionKeywordsSelecting(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        text = "Ok, it seems like you already have some initial perspectives. Good job! To smoothly think about the supporting premise and evidence for your argument writing, you could tell me your thoughts, or I can give you some hints. If you are prepared and confident to write down your post now, I will still be with you in the writing panel."
+        text = "Good job! Ready to write something? Or I can discuss with you, sharing the hints if you want."
         buttons = []
-        buttons.append({"title": "Write now!", "payload": "Write now!"})
-        buttons.append({"title": "Discuss about my ideas", "payload": "/discuss"})
-        buttons.append({"title": "Have your hints", "payload": "/no_idea"})
+        buttons.append({"title": "Write now!", "payload": "/write_now"})
+        buttons.append({"title": "Discuss", "payload": "/discuss"})
+        buttons.append({"title": "Hints", "payload": "/no_idea"})
         dispatcher.utter_message(text=text, buttons=buttons)
         return []
 class ActionAskingKeywords(Action):
@@ -217,8 +229,11 @@ class ActionKeywordsMatching(Action):
         highFrequentKeywordsText = '{}, {}'.format(*highFrequentKeywords)
         relatedKeywordsText = '{}, {}'.format(*relatedKeywords)
         keywordsText = lowFrequentKeywordsText + highFrequentKeywordsText + relatedKeywordsText
-        text = "Wow, you are so thoughtful! These are promising points to create a good post. **{}** have not been often mentioned before. (**{}** have been mentioned in some posts, and **{}** are some related keywords that you could consider.) I am confident that you can create a novel and fantastic post. I will wait for you in the writing pane!".format(lowFrequentKeywordsText, highFrequentKeywordsText, relatedKeywordsText)
-        dispatcher.utter_message(text=text)
+        text = "I ran a quick search and here are what you may consier:\nNot mentioned before: **{}**.\nMentioned in some posts: **{}**.\nRelated keywords to consider: **{}**.".format(lowFrequentKeywordsText, highFrequentKeywordsText, relatedKeywordsText)
+        buttons = []
+        buttons.append({"title":'Write now!', "payload": '/write_now'})
+        buttons.append({"title": 'Restart', 'payload': '/restart'})
+        dispatcher.utter_message(text=text, buttons=buttons)
         return [SlotSet("Keywords", keywordsText)]
 
 class ActionKeywordsPrompting(Action):
@@ -238,10 +253,11 @@ class ActionKeywordsPrompting(Action):
 
         keywordsTextList = [i[0] for i in sampleKeywords]
         keywordsText = '{}, {}, {}, {}'.format(*keywordsTextList)
-        text = "Ok, I can share some of my thoughts with you. Regarding to this claim, you could say something about these topics:\n**{}**\nHope that these suggestions will inspire to think more ideas! I will wait you in the writing pane!".format(keywordsText)
+        text = "Here are some topic you can talk about:\n**{}**\nWe can do this again if still clueless. Believe me, I can do this all day with endless energy!".format(keywordsText)
         buttons = []
-        buttons.append({"title":'Write now!', "payload": 'Write now!'})
-        dispatcher.utter_message(text=text)
+        buttons.append({"title":'Write now!', "payload": '/write_now'})
+        buttons.append({"title": 'Restart', 'payload': '/restart'})
+        dispatcher.utter_message(text=text, buttons=buttons)
         return [SlotSet("Keywords", keywordsText)]
 
 class ActionInfoDisplaying(Action):
