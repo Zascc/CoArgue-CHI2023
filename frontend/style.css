@@ -525,24 +525,3 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   position: relative;
   left: 40%;
 }
-
-<<<<<<< HEAD
-/* animation progress bar */
-
-.grow {
-  animation: anim-grow 3s linear forwards;
-}
-
-@keyframes anim-grow {
-  0% {
-    width: 25%;
-
-  }
-  100% {
-    width: 50%;
-  }
-=======
-#related-question-container:empty::after {
-  content: "No related questions";
->>>>>>> baseline
-}
