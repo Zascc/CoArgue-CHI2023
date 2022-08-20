@@ -182,10 +182,10 @@ function initNavigationView(){
 
   // remove the labels below after loading the percentage bar
   document.querySelector('.po2-grid.po2-gap-xs').remove()
-  const verticalLine = document.createElement('div')
-  verticalLine.setAttribute('id', 'vertical-line')
-  verticalLine.classList.add('vertical-line')
-  document.querySelector('.pct-bar__bg').prepend(verticalLine)
+  // const verticalLine = document.createElement('div')
+  // verticalLine.setAttribute('id', 'vertical-line')
+  // verticalLine.classList.add('vertical-line')
+  // document.querySelector('.pct-bar__bg').prepend(verticalLine)
 }
 
 
@@ -281,7 +281,7 @@ function displayClaimCenters(el){
   const stanceFirstLetter = stance[0].toUpperCase()
   const claimCenterEls = claimCenters.map((p, idx) => {
     const claimEl = document.createElement('li')
-    claimEl.innerHTML = `<span class='${stance}'>${stanceFirstLetter}C${idx+1} :</span>${p}` // need to adjust the color to be in line with the stance color
+    claimEl.innerHTML = `<span class='${stance}'>${stanceFirstLetter}C${idx+1}:</span> ${p}` // need to adjust the color to be in line with the stance color
     claimEl.classList.add("claim-center", "list-group-item")
     claimEl.setAttribute('claim-center-sentiment', stance)
     
@@ -458,7 +458,7 @@ document.addEventListener('click', (e) => {
   else if (e.target.matches('.writing-answer-button')) {
     writingModal.show()
   }
-  else if (e.target.matches('.claim-center')){
+  else if (e.target.matches('.claim-center') || e.target.matches('.claim-center *')) {
     flipNavigationView('claim-center', e.target)
   }
   else if (e.target.matches('.pct-bar__fill')){

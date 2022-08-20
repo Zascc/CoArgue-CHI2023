@@ -245,7 +245,7 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
 /* question container and writing button */
 #question-content-container {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
 }
 
 /* claim center list items */
@@ -322,6 +322,19 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   height: var(--pct-bar-height);
   border-radius: var(--pct-bar-radius);
   overflow: hidden;
+}
+
+.pct-bar {
+  position: relative;
+}
+
+#percentage-bar-container::before {
+  content: "";
+  position: absolute;
+  top: 1.75em;
+  bottom: 1.75em;
+  left: 50%;
+  border-left: 2px solid rgb(65, 65, 65);
 }
 
 .pct-bar__fill {
