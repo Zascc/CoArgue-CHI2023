@@ -526,8 +526,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   initToTopButton()
 
   initWritingModal()
-  initChatbot()
-  initRightSideSplit()
+  // initChatbot()
+  // initRightSideSplit()
   const res = await fetchPageData();
   initNavigationView()
   const { question, description, relatedQuestions } = res; // answers 和 collapsedAnswers在await之后已经写入全局
@@ -618,10 +618,8 @@ function createAnswerEl(answerTemplate, ansIdx, ans) {
 
 
   //加载单个回答的数据
-
   answerNode.querySelector('.upvotes').textContent = ans.upvotes;
-  markClaimAndPremise(answerNode, ans.premise, ansIdx, 'premise')
-  markClaimAndPremise(answerNode, ans.claim, ansIdx, 'claim')
+
   return answerNode;
 }
 

@@ -85,72 +85,15 @@
       <div class="col col-4 side">
         <div class="card" id="note-pane-card">
           <div class="card-header">
-            Navigation View > Claim Center Overview
-            <button type="button" class="btn btn-light" style="display:none" id="go-back-button" title="Back" onclick="flipNavigationView('claim-detail')">
-              <i class="bi bi-arrow-left-square"></i>
-            </button>
-
+            Related Questions
           </div>
-          <div class="card-body" id="note-pane-card-body">
-            <div id="claim-center-overview-page">
-              <div id = "chart-container">
-                
-                <div class="pct-bar js-pct-bar">
-                  <div id="percentage-bar-container">
-                    <div id="label-percentage-container" style="display: flex; text-align: center;">
-                      <span class='positive' style="flex-basis: 10%;">10%</span>
-                      <span class='neutral' style="flex-basis: 75%;">75%</span>
-                      <span class='negative' style="flex-basis: 15%;">15%</span>
-                    </div>
-                    <div class="pct-bar__bg js-pct-bar__bg po2-margin-bottom-md" aria-hidden="true">
-                    </div>
-                    <div id="label-text-container" style="display: flex; text-align: center;">
-                      <span class='positive' style="flex-basis: 10%;">Positive</span>
-                      <span class='neutral' style="flex-basis: 75%;">Neutral</span>
-                      <span class='negative' style="flex-basis: 15%;">Negative</span>
-                    </div>
-                  </div>
-                  <ul class="po2-grid po2-gap-xs" style="display: none;">
-                    <li class="po2-flex po2-items-center">
-                      <span class="pct-bar__bullet po2-bg-primary po2-margin-right-2xs" aria-hidden="true"></span>
-                      <span class="po2-text-sm">Positive (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-primary">10%</i>)</span>
-                    </li>
-                
-                    <li class="po2-flex po2-items-center">
-                      <span class="pct-bar__bullet po2-bg-contrast-low po2-margin-right-2xs" aria-hidden="true"></span>
-                      <span class="po2-text-sm">Neutral (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-contrast-low">75%</i>)</span>
-                    </li>
-                
-                    <li class="po2-flex po2-items-center">
-                      <span class="pct-bar__bullet po2-bg-accent po2-margin-right-2xs" aria-hidden="true"></span>
-                      <span class="po2-text-sm">Negative (<i class="js-pct-bar__value" data-pct-bar-bg="po2-bg-accent">15%</i>)</span>
-                    </li>
-                  </ul>
-                </div>
+          <div class="card-body" id="related-question-card-body">
+            <div id='related-question-container'></div>
+            <template id="template-related-question">
+              <div class='related-question'>
+                <a class='related-question' href="#"></a>
               </div>
-              <div id = "claim-center-list-container" style = "display: none;" display-claim-stance = "">
-                <span id="claim-center-list-title"></span>
-                <ul class = 'list-group'>
-                </ul>
-              </div>
-            </div>
-
-            <div id="claim-detail-page" style="display:none">
-              <div id="claim-detail-container">
-                <div id = "claim-list-container">
-                  <div id="claim-list-title" style="margin: 10px 0px 10px 0px;">Related Claims:</div>
-                  <ul class = 'list-group'>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card" id="chatbot-pane-card">
-          <div class="card-header">
-            Chatbot Tutor
-          </div>
-          <div id="chatbot-pane-card-body">
+            </template>
           </div>
         </div>
       </div>
@@ -198,12 +141,8 @@
       <button type="button" id="finish-button" class="btn btn-primary" onclick="OnFinishClicked()">Post</button>
     </div>
   </div>
-  <!-- chatbot widget  -->
-  <div id="rasa-chat-widget" data-websocket-url="http://35.222.191.255:5005" data-root-element-id = "chatbot-pane-card-body" data-default-open=true data-height=500 data-initial-payload ="hello" ></div>
-  <script src="https://unpkg.com/@rasahq/rasa-chat" type="application/javascript"></script>
 
   
-
   <input type="file" id="upload-file-input" hidden/>
   <div id="uploaded-json" style="display: none;"></div>
 </body>

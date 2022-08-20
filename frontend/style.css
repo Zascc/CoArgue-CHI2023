@@ -526,6 +526,7 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   left: 40%;
 }
 
+<<<<<<< HEAD
 /* animation progress bar */
 
 .grow {
@@ -540,4 +541,8 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   100% {
     width: 50%;
   }
+=======
+#related-question-container:empty::after {
+  content: "No related questions";
+>>>>>>> baseline
 }
