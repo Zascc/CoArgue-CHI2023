@@ -258,15 +258,18 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   padding: .5rem .5rem .5rem 1rem !important;
 }
 
+#chatbot-pane-card-body, #rasa-chat-widget-container {
+  height: 100%;
+}
 
 #rasa-chat-widget-container{
   position: sticky;
 }
 
 #rasa-chat-widget-container > div:first-child {
-  height: 350px !important;
+  height: 100% !important;
   width: 100% !important;
-  border-style: solid !important;
+  border: none !important;
   margin-bottom: 0px !important;
   /* font-size: 20px; */
 }

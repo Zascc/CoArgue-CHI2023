@@ -380,6 +380,15 @@ function initChatbot(){
   
 }
 
+function initRightSideSplit() {
+  window.Split(['#note-pane-card', '#chatbot-pane-card'], {
+    sizes: [40, 60],
+    gutterSize: 24,
+    direction: 'vertical',
+    cursor: 'row-resize',
+  })
+}
+
 function addChatBubbleElement(el){
   const chatbotMessageEls = document.querySelector('.css-14otd4b') // all dialogue bubbles
   const newMessage = document.createElement('div')
@@ -464,6 +473,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   initNavigationView()
   initWritingModal()
   initChatbot()
+  initRightSideSplit()
   const res = await fetchPageData();
   const {question, description, relatedQuestions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
 
