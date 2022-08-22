@@ -6,6 +6,62 @@ let writingModal;
 let claimSentenceModal;
 let userPost;
 
+const CLAIM_CENTERS = {
+  "positive": [
+    {
+      "text": "I would say YES!",
+      "supportiveness": 0.038461538461538464
+    },
+    {
+      "text": "Of course you should",
+      "supportiveness": 0.057692307692307696
+    }],
+  "neutral": [
+    {
+      "text": "It’s not too late to invest.",
+      "supportiveness": 0.07692307692307693
+    },
+    {
+      "text": "That’s up to you.",
+      "supportiveness": 0.019230769230769232
+    },
+    {
+      "text": "It depends what your level of disposable income is, how great your assets are, and what other assets you have invested in.",
+      "supportiveness": 0.038461538461538464
+    },
+    {
+      "text": "The significant thing is to do your own research and comprehend the dangers.",
+      "supportiveness": 0.019230769230769232
+    },
+    {
+      "text": "Invest in Bitcoin, only if you are okay to loss all.",
+      "supportiveness": 0.21153846153846154
+    },
+    {
+      "text": "Investing in Bitcoin is viable option especially in a view of current decline of the power of Fiat currencies.",
+      "supportiveness": 0.21153846153846154
+    },
+    {
+      "text": "If you are willing to take the risk, first make sure you understand what you are investing in and have a crypto investment strategy",
+      "supportiveness": 0.17307692307692307
+    }
+  ],
+  "negative": [
+    {
+      "text": "Bitcoin is pretty useless. But so is gold.",
+      "supportiveness": 0.09615384615384616
+    },
+    {
+      "text": "Cryto currency is an extremely high-hazard venture, and CFDs bought on margin are significantly more hazardous.",
+      "supportiveness": 0.019230769230769232
+    },
+    {
+      "text": "It is almost certainly in a bubble.",
+      "supportiveness": 0.038461538461538464
+    },
+  ]
+}
+
 function fetchPageData() {
   // const queryParams = new URLSearchParams(window.location.search)
   // const control = queryParams.get('control') || 'exp'
@@ -270,18 +326,20 @@ function displayClaimCenters(el){
 
   // calculate the percentage of each stance
   function claimCentersSelector(x){
-    return {
-      "positive": ["I would say YES!", "Of course you should"],
-      "neutral": ["It’s not too late to invest.", "That’s up to you.", "It depends what your level of disposable income is, how great your assets are, and what other assets you have invested in.", "The significant thing is to do your own research and comprehend the dangers.", "Invest in Bitcoin, only if you are okay to loss all.", "Investing in Bitcoin is viable option especially in a view of current decline of the power of Fiat currencies.", "If you are willing to take the risk, first make sure you understand what you are investing in and have a crypto investment strategy"],
-      "negative": ["Bitcoin is pretty useless. But so is gold.", "Cryto currency is an extremely high-hazard venture, and CFDs bought on margin are significantly more hazardous.", "It is almost certainly in a bubble."]
-    }[x]
+    return CLAIM_CENTERS[x].sort((c1, c2) => c2.supportiveness - c1.supportiveness)
   }
 
   const claimCenters = claimCentersSelector(stance)
   const stanceFirstLetter = stance[0].toUpperCase()
   const claimCenterEls = claimCenters.map((p, idx) => {
+    const {text, supportiveness} = p
     const claimEl = document.createElement('li')
-    claimEl.innerHTML = `<span class='${stance}'>${stanceFirstLetter}C${idx+1}:</span> ${p}` // need to adjust the color to be in line with the stance color
+    claimEl.innerHTML = `<div class="stance-content">
+      <span class='${stance}'>${stanceFirstLetter}C${idx+1}:</span> ${text}
+    </div>
+    <div class="stance-supportiveness">
+      ${supportiveness.toFixed(2)}
+    </div>` // need to adjust the color to be in line with the stance color
     claimEl.classList.add("claim-center", "list-group-item")
     claimEl.setAttribute('claim-center-sentiment', stance)
     

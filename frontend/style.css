@@ -251,6 +251,11 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
 /* claim center list items */
 .claim-center{
   cursor: pointer;
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  vertical-align: middle;
+  padding: .5rem .5rem .5rem 1rem !important;
 }
 
 
@@ -442,6 +447,19 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
 }
 .neutral{
   color: var(--neutralColor)
+}
+.stance-content {
+  padding-right: .5rem;
+  border-right: 1px solid #dddd;
+  flex: 1;
+}
+.stance-supportiveness {
+  padding-left: .5rem;
+  flex: 0 0 3.5ch;
+  box-sizing: content-box;
+  align-self: center;
+  text-align: center;
+
 }
 
 /* styling for greying out the whole page */
