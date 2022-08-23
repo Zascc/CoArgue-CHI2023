@@ -411,12 +411,14 @@ function addChatBubbleElement(el){
       }
     })
   })
-  let text = `It seems that you are interested in this premise. It is used to support the claim center '${supportedClaimCenter}'. Here are some other premises supporting the same claim center in` 
+
+  const newMessagePrev = document.createElement('div')
+  let textPrev = `It seems that you are interested in this premise. It is used to support the claim center '${supportedClaimCenter}'.`
+  newMessagePrev.innerHTML = `<div role="button" tabindex="0" data-e2e="EventContainer-bot-1660411092.834" id="" class="css-6es4cf"><div class="css-hu563a"><div class="css-463jce"><div class="css-jgse21"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="meh-blank" class="svg-inline--fa fa-meh-blank fa-w-16 css-1y53wuf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" style="width: 1em;"><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm-80 232c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm160 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"></path></svg></div></div><div class="css-19h6xf9"><div class="css-l3rx45" aria-describedby="tooltip-4" style="max-width: 320px;"><div data-qa="conversation-message-bubbles_div" class="css-1di2tiy"><div><span data-qa="markdown-text" class="css-8f4u10">${textPrev}</span></div></div></div></div></div></div>`
+
+  let text = `Here are some other premises supporting the same claim center` 
   
-  similarPremise.forEach(idx => {
-    text += ` answer-${idx},`
-  })
-  text.slice(0, -1)
+  
   text += '. Click the buttons to jump to those answers.'
   
   let buttonsHTML = ''; // <div class="css-vurnku"><button data-btn="jump-button" class=" css-1aibqey">Jump to that answer</button></div>
@@ -424,6 +426,7 @@ function addChatBubbleElement(el){
     buttonsHTML += `<div class="css-vurnku"><button data-btn="jump-button" original-ans-idx="${idx}" class=" css-1aibqey">answer ${idx}</button></div>`
   })
   newMessage.innerHTML = `<div role="button" tabindex="0" data-e2e="EventContainer-bot-1660411092.834" id="" class="css-6es4cf"><div class="css-hu563a"><div class="css-463jce"><div class="css-jgse21"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="meh-blank" class="svg-inline--fa fa-meh-blank fa-w-16 css-1y53wuf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" style="width: 1em;"><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm-80 232c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm160 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"></path></svg></div></div><div class="css-19h6xf9"><div class="css-l3rx45" aria-describedby="tooltip-4" style="max-width: 320px;"><div data-qa="conversation-message-bubbles_div" class="css-1di2tiy"><div><span data-qa="markdown-text" class="css-8f4u10">${text}</span></div></div></div></div></div><div class="css-klsenx">${buttonsHTML}</div></div>`
+  chatbotMessageEls.append(newMessagePrev)
   chatbotMessageEls.append(newMessage)
 }
 
