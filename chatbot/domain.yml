@@ -5,7 +5,7 @@ session_config:
 intents:
 - greet
 - write_now
-- discuss
+- explore
 - no_idea
 - stance
 - choose_claim_center

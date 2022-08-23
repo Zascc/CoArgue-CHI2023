@@ -53,7 +53,7 @@ class ActionGreetAndIntro(Action):
 
         text = "Hi, I have read all the answer posts to be knowledgeable but I cannot be as creative as you with my awkward mind. Let’s contribute something amazing together!"
         buttons = []
-        buttons.append({'title': 'Start', 'payload': '/start'})
+        buttons.append({'title': 'Start writing', 'payload': 'Start writing'})
         dispatcher.utter_message(text=text, buttons=buttons)
         return []
 
@@ -68,9 +68,9 @@ class ActionInitialization(Action):
 
 
         buttons = []
-        buttons.append({"title": 'Write now' , "payload": '/write_now'})
-        buttons.append({"title": 'Explore', "payload": '/discuss'})
-        buttons.append({"title": 'Not now', "payload": '/no_idea'})
+        buttons.append({"title": 'Write now' , "payload": 'Write now!'})
+        buttons.append({"title": 'Explore More', "payload": 'I want to explore more about this topic.'})
+        buttons.append({"title": 'Not now', "payload": 'I have no idea on this topic.'})
         text = "Already got something in mind? Share with me to clear your concerns!"
         
         dispatcher.utter_message(text=text, buttons=buttons)
@@ -84,7 +84,7 @@ class ActionWriteNow(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        dispatcher.utter_message(text='You can now start writing by clicking on the "Write Answer "button!')
+        dispatcher.utter_message(text='You can now start writing by clicking on the "Write Answer" button!')
         return []
 
 
@@ -101,6 +101,7 @@ class ActionStanceInqury(Action):
         buttons.append({"title": 'Neutral', "payload": 'Neutral'})
         buttons.append({"title": 'Negative', "payload": 'Negative'})
         
+        dispatcher.utter_message(text="First, let me know your stance on this topic.")
         dispatcher.utter_message(text='What’s your attitude on the Bitcoin investment?', buttons=buttons)
         return [SlotSet('ClaimIndex', '0')]
 
@@ -160,9 +161,11 @@ class ActionClaimSuggestion(Action):
 
         buttons = []
         buttons.append({"title": "Great!", "payload": '/choose_claim_center{{"ChosenClaimCenter": "claim_{}"}}'.format(claimIdx)})
-        buttons.append({"title": "Not interested", "payload": '/not_interested'})
+        buttons.append({"title": "Not interested", "payload": 'I am not interested in those claims.'})
 
         if(claimIdx == 0):
+            dispatcher.utter_message(text="After selecting the stance, I will suggest some claims related to the chosen stance.")
+            dispatcher.utter_message(text='Tips :"You can see all the claims in the navigation view!"')
             text = "In this case, I found **'{}'** claims are not supported sufficiently. Would you like to try this?".format(claimThisRound)
         if(claimIdx == (len(claim_center_list) - 1)):
             text = "Then how about **'{}'** claims?".format(claimThisRound)
@@ -170,11 +173,13 @@ class ActionClaimSuggestion(Action):
             claimIdx = -1
         else:
             text = "Then how about **'{}'** claims?".format(claimThisRound)
-        buttons.append({'title': 'Choose stance again', "payload": '/choose_stance_again'})
+        buttons.append({'title': 'Choose stance again', "payload": 'I want to choose the stance again.'})
         # for idx, el in enumerate(claim_center_list):
         #     buttons.append({"title": "claim {}".format(idx), "payload": '/choose_claim_center{{"ChosenClaimCenter": "claim_{}"}}'.format(idx)})
         #     text += "claim {}: {}\n".format(idx, el)
+        
         dispatcher.utter_message(text=text, buttons=buttons)
+        
         return [SlotSet('ClaimIndex', str(claimIdx + 1))]
 
 class ActionKeywordsSelecting(Action):
@@ -185,11 +190,11 @@ class ActionKeywordsSelecting(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        text = "Good job! Ready to write something? Or I can discuss with you, sharing the hints if you want."
+        text = "Good job! After choosing the claim, are you ready to write something? Or I can discuss with you, sharing the hints if you want."
         buttons = []
-        buttons.append({"title": "Write now!", "payload": "/write_now"})
-        buttons.append({"title": "Discuss", "payload": "/discuss"})
-        buttons.append({"title": "Hints", "payload": "/no_idea"})
+        buttons.append({"title": "Write now!", "payload": "Write now!"})
+        buttons.append({"title": "Discuss Keywords", "payload": "I have some keywords to discuss with you."})
+        buttons.append({"title": "Get Hints", "payload": "I want to get some hints from you."})
         dispatcher.utter_message(text=text, buttons=buttons)
         return []
 class ActionAskingKeywords(Action):
@@ -200,7 +205,7 @@ class ActionAskingKeywords(Action):
         tracker: Tracker,
         domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         
-        text = "Sure! You can give me some keywords related to the Bitcoin background. Please give the keywords in the form of 'Keywords: <keywords A> <keyword B>......'"
+        text = "Sure! You can give me some keywords related to the Bitcoin background and I will check through my database. Please give the keywords in the form of 'Keywords: <keywords A> <keyword B>......'"
         dispatcher.utter_message(text=text)
         
         
@@ -218,6 +223,15 @@ class ActionKeywordsMatching(Action):
             keywordsData = json.load(f)
         stance = tracker.get_slot('StanceCategory').lower()
         chosenClaimCenter = tracker.get_slot('ChosenClaimCenter')
+        def claim_center_list_selector(x):
+            return {
+                "positive": ["I would say YES!", "Of course you should"],
+                "neutral": ["It’s not too late to invest.", "That’s up to you.", "It depends what your level of disposable income is, how great your assets are, and what other assets you have invested in.", "The significant thing is to do your own research and comprehend the dangers.", "Invest in Bitcoin, only if you are okay to loss all.", "Investing in Bitcoin is viable option especially in a view of current decline of the power of Fiat currencies.", "If you are willing to take the risk, first make sure you understand what you are investing in and have a crypto investment strategy"],
+                "negative": ["Bitcoin is pretty useless. But so is gold.", "Cryto currency is an extremely high-hazard venture, and CFDs bought on margin are significantly more hazardous.", "It is almost certainly in a bubble."]
+            }[x]
+
+        chosenClaimCenterText = claim_center_list_selector(stance)[int(chosenClaimCenter[-1])]
+
 
         keywordsList = keywordsData[stance][chosenClaimCenter]
 
@@ -229,10 +243,12 @@ class ActionKeywordsMatching(Action):
         highFrequentKeywordsText = '{}, {}'.format(*highFrequentKeywords)
         relatedKeywordsText = '{}, {}'.format(*relatedKeywords)
         keywordsText = lowFrequentKeywordsText + highFrequentKeywordsText + relatedKeywordsText
-        text = "I ran a quick search and here are what you may consier:\nNot mentioned before: **{}**.\nMentioned in some posts: **{}**.\nRelated keywords to consider: **{}**.".format(lowFrequentKeywordsText, highFrequentKeywordsText, relatedKeywordsText)
+        text = "I ran a quick search and here are what you may consier:\nNot mentioned before: **{}**.\nMentioned in some posts: **{}**.\nRelated keywords to consider: **{}**.\n You can try to write your own post now!".format(lowFrequentKeywordsText, highFrequentKeywordsText, relatedKeywordsText)
         buttons = []
-        buttons.append({"title":'Write now!', "payload": '/write_now'})
+        buttons.append({"title":'Write now!', "payload": 'Write now!'})
         buttons.append({"title": 'Restart', 'payload': '/restart'})
+
+        dispatcher.utter_message(text='You have chosen the claim **{}**'.format(chosenClaimCenterText))
         dispatcher.utter_message(text=text, buttons=buttons)
         return [SlotSet("Keywords", keywordsText)]
 
@@ -248,6 +264,16 @@ class ActionKeywordsPrompting(Action):
         stance = tracker.get_slot('StanceCategory').lower()
         chosenClaimCenter = tracker.get_slot('ChosenClaimCenter')
 
+        def claim_center_list_selector(x):
+            return {
+                "positive": ["I would say YES!", "Of course you should"],
+                "neutral": ["It’s not too late to invest.", "That’s up to you.", "It depends what your level of disposable income is, how great your assets are, and what other assets you have invested in.", "The significant thing is to do your own research and comprehend the dangers.", "Invest in Bitcoin, only if you are okay to loss all.", "Investing in Bitcoin is viable option especially in a view of current decline of the power of Fiat currencies.", "If you are willing to take the risk, first make sure you understand what you are investing in and have a crypto investment strategy"],
+                "negative": ["Bitcoin is pretty useless. But so is gold.", "Cryto currency is an extremely high-hazard venture, and CFDs bought on margin are significantly more hazardous.", "It is almost certainly in a bubble."]
+            }[x]
+
+        chosenClaimCenterText = claim_center_list_selector(stance)[int(chosenClaimCenter[-1])]
+        
+
         keywordsList = keywordsData[stance][chosenClaimCenter]
         sampleKeywords = random.sample(keywordsList, 4)
 
@@ -255,8 +281,11 @@ class ActionKeywordsPrompting(Action):
         keywordsText = '{}, {}, {}, {}'.format(*keywordsTextList)
         text = "Here are some topic you can talk about:\n**{}**\nWe can do this again if still clueless. Believe me, I can do this all day with endless energy!".format(keywordsText)
         buttons = []
-        buttons.append({"title":'Write now!', "payload": '/write_now'})
+        buttons.append({"title":'Write now!', "payload": 'Write now!'})
         buttons.append({"title": 'Restart', 'payload': '/restart'})
+
+
+        dispatcher.utter_message(text='You have chosen the claim **{}**'.format(chosenClaimCenterText))
         dispatcher.utter_message(text=text, buttons=buttons)
         return [SlotSet("Keywords", keywordsText)]
 

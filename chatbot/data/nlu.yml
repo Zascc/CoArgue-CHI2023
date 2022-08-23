@@ -24,12 +24,15 @@ nlu:
     - I want to start writing
     - I would like to write something
 
-- intent: discuss
+- intent: explore
   examples: |
     - discuss
     - I want to have some discussion with you
     - discuss with you
     - I want to discuss with you about my ideas
+    - I want to explore more about this topic
+    - Explore more
+    - I have some keywords to discuss with you.
 
 
 - intent: no_idea
@@ -37,6 +40,8 @@ nlu:
     - no idea
     - I have no idea about it
     - I don't know
+    - I have no idea on this topic
+    - I want to get some hints from you.
 
 - intent: stance
   examples: |
@@ -57,6 +62,7 @@ nlu:
     - Start
     - Begin
     - begin
+    - Start writing
 
 - intent: restart_session
   examples: |
@@ -66,7 +72,9 @@ nlu:
 - intent: choose_stance_again
   examples: |
     - choose stance again
+    - I want to choose the stance again.
 
 - intent: not_interested
   examples: |
     - not interested
+    - I am not interested in those claims.

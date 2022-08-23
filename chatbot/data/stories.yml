@@ -17,10 +17,10 @@ stories:
   - action: answer_writing_action
   - action: info_displaying_action
 
-- story: discuss after initialization
+- story: explore after initialization
   steps:
   - checkpoint: initialization_switch
-  - intent: discuss
+  - intent: explore
   - action: stance_inqury_action
   - checkpoint: stance_inqury_started
 
@@ -72,7 +72,7 @@ stories:
 - story: some idea after suggestion
   steps:
   - checkpoint: suggestion_switch
-  - intent: discuss
+  - intent: explore
   - action: ask_for_keywords_action
   - intent: provide_keywords
   - action: keywords_matching_action
