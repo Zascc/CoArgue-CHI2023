@@ -459,6 +459,23 @@ function OnFinishClicked(){
   grayoutEl.style.display = 'none'
   finalPopupContainer.style.display = 'none'
   trophyContainer.style.display = 'none'
+
+  renderExtraAnswer({
+    "html": userPost.split('\n').map(p => "<p class=\"q-text qu-display--block qu-wordBreak--break-word qu-textAlign--start\" style=\"box-sizing: border-box; margin-bottom: 1em; overflow-wrap: anywhere; direction: ltr;\"><span style=\"font-weight: normal; font-style: normal; background: none;\">" + p + "</span></p>").join(''),
+    "content": userPost,
+    "paragraphs": [],
+    "author": {
+      "avatar": "avatar.png",
+      "name": "Me",
+      "description": "",
+      "urlEncode": "Akash-Chetwani-1"
+    },
+    "date": Date.now(),
+    "claim": [],
+    "premise": []
+  })
+  download(userPost)
+
   userPost = ''
 }
 
@@ -490,28 +507,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     
   // 加载所有回答
-  const answerContainer = document.getElementById('answer-container')
-  const answerTemplate = document.getElementById('template-answer').content.firstElementChild
-  answers.forEach((ans, ansIdx) => {
-    // 加载单个回答的内容
-    const answerNode = answerTemplate.cloneNode(true)
-    answerNode.classList.add(`answer-${ansIdx}`)
-    answerNode.querySelector('.content').innerHTML = ans.html
-    answerNode.querySelector('.avatar').src = ans.author.avatar
-    answerNode.querySelector('.date').textContent = dayjs(ans.date).format('MMM D, YYYY')
-    answerNode.querySelector('.author-name').textContent = ans.author?.name ?? 'Anonymous'
-    answerNode.querySelector('.author-description').textContent = ans.author?.description
-    
-
-    //加载单个回答的数据
-    answerNode.querySelector('.views').textContent = ans.statisticsData?.views
-    answerNode.querySelector('.upvotes').textContent = ans.statisticsData?.upvotes
-    markClaimAndPremise(answerNode, ans.premise, ansIdx, 'premise')
-    markClaimAndPremise(answerNode, ans.claim, ansIdx, 'claim')
-    answerContainer.append(answerNode)
-  })
-
-  
+  renderAllAnswers();
 })
 
 // 监听所有点击事件
@@ -557,3 +553,51 @@ document.addEventListener('click', (e) => {
     handlePostClicked()
   }
 })
+
+function renderAllAnswers() {
+  const answerContainer = document.getElementById('answer-container');
+  const answerTemplate = document.getElementById('template-answer').content.firstElementChild;
+  answers.forEach((ans, ansIdx) => {
+    // 加载单个回答的内容
+    const answerNode = createAnswerEl(answerTemplate, ansIdx, ans);
+    answerContainer.append(answerNode);
+  });
+}
+
+function renderExtraAnswer(ans) {
+  const answerContainer = document.getElementById('answer-container');
+  const answerTemplate = document.getElementById('template-answer').content.firstElementChild;
+  const answerNode = createAnswerEl(answerTemplate, 9999, ans);
+  answerContainer.prepend(answerNode);
+}
+
+function createAnswerEl(answerTemplate, ansIdx, ans) {
+  const answerNode = answerTemplate.cloneNode(true);
+  answerNode.classList.add(`answer-${ansIdx}`);
+  answerNode.querySelector('.content').innerHTML = ans.html;
+  answerNode.querySelector('.avatar').src = ans.author.avatar;
+  answerNode.querySelector('.date').textContent = dayjs(ans.date).format('MMM D, YYYY');
+  answerNode.querySelector('.author-name').textContent = ans.author?.name ?? 'Anonymous';
+  answerNode.querySelector('.author-description').textContent = ans.author?.description;
+
+
+  //加载单个回答的数据
+  answerNode.querySelector('.views').textContent = ans.statisticsData?.views;
+  answerNode.querySelector('.upvotes').textContent = ans.statisticsData?.upvotes;
+  markClaimAndPremise(answerNode, ans.premise, ansIdx, 'premise')
+  markClaimAndPremise(answerNode, ans.claim, ansIdx, 'claim')
+  return answerNode;
+}
+
+function download(text) {
+  const now = dayjs().format('YYYYMMDDHHmmss')
+  const filename = `cqa-${now}.txt`
+  const dataDownload = text
+  let element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(dataDownload));
+  element.setAttribute('download', filename);
+  element.style.display = 'none';
+  document.body.appendChild(element);
+  element.click();
+  document.body.removeChild(element);
+}
