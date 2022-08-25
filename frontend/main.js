@@ -383,6 +383,7 @@ function displayClaimCenters(el){
 function initChatbot(){
   const chatWidgetContainer = document.getElementById('rasa-chat-widget-container')
   
+  
   const chatbotButton = chatWidgetContainer.querySelector('button.large.css-qmypsf')  // init展示 click button收起来 然后调数值展开
   const chatbotBox = chatWidgetContainer.querySelector('div')
   chatbotButton.click()
@@ -498,6 +499,17 @@ function OnUpdateAnswerClicked(){
 // 等价于jQuery的 $.ready(...) 即 $(...)
 document.addEventListener('DOMContentLoaded', async () => {
   // 把和数据无关的UI init放到fetchPageData之前，防止用户看到尚未初始化的丑逼UI
+  const queryParams = new URLSearchParams(window.location.search)
+  const chatbotWidget = document.getElementById('rasa-chat-widget')
+  let payload = ''
+  const topic = queryParams.get('question')
+  if(topic == 'car'){
+    payload = 'hello car'
+  }
+  else if (topic == 'bitcoin'){
+    payload = 'hello bitcoin'
+  }
+  chatbotWidget.setAttribute('data-initial-payload', payload)
   
   initToTopButton()
   
@@ -507,7 +519,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const res = await fetchPageData();
   initNavigationView()
   const {question, description, relatedQuestions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
-
+  
 
 
 
