@@ -6,105 +6,56 @@ let writingModal;
 let claimSentenceModal;
 let userPost;
 
-const CLAIM_CENTERS = {
-  "positive": [
-    {
-      "text": "I would say YES!",
-      "supportiveness": 0.038461538461538464
-    },
-    {
-      "text": "Of course you should",
-      "supportiveness": 0.057692307692307696
-    }],
-  "neutral": [
-    {
-      "text": "It’s not too late to invest.",
-      "supportiveness": 0.07692307692307693
-    },
-    {
-      "text": "That’s up to you.",
-      "supportiveness": 0.019230769230769232
-    },
-    {
-      "text": "It depends what your level of disposable income is, how great your assets are, and what other assets you have invested in.",
-      "supportiveness": 0.038461538461538464
-    },
-    {
-      "text": "The significant thing is to do your own research and comprehend the dangers.",
-      "supportiveness": 0.019230769230769232
-    },
-    {
-      "text": "Invest in Bitcoin, only if you are okay to loss all.",
-      "supportiveness": 0.21153846153846154
-    },
-    {
-      "text": "Investing in Bitcoin is viable option especially in a view of current decline of the power of Fiat currencies.",
-      "supportiveness": 0.21153846153846154
-    },
-    {
-      "text": "If you are willing to take the risk, first make sure you understand what you are investing in and have a crypto investment strategy",
-      "supportiveness": 0.17307692307692307
-    }
-  ],
-  "negative": [
-    {
-      "text": "Bitcoin is pretty useless. But so is gold.",
-      "supportiveness": 0.09615384615384616
-    },
-    {
-      "text": "Cryto currency is an extremely high-hazard venture, and CFDs bought on margin are significantly more hazardous.",
-      "supportiveness": 0.019230769230769232
-    },
-    {
-      "text": "It is almost certainly in a bubble.",
-      "supportiveness": 0.038461538461538464
-    },
-  ]
-}
+let CLAIM_CENTERS;
+let percentage;
 
 function fetchPageData() {
   // const queryParams = new URLSearchParams(window.location.search)
   // const control = queryParams.get('control') || 'exp'
   // const question = queryParams.get('question') || 'body'
   // const path = `${control}.${question}.js`
-  const path = "data.js"
-  return new Promise((resolve) => {
-    const documentHead = document.getElementsByTagName('head')[0]
-    const el = document.createElement('script')
-    documentHead.appendChild(el)
-    el.addEventListener('load', () => {
-      answers = mock.answers
-      resolve(mock)
+  // const path = "data.js"
+  // return new Promise((resolve) => {
+  //   const documentHead = document.getElementsByTagName('head')[0]
+  //   const el = document.createElement('script')
+  //   documentHead.appendChild(el)
+  //   el.addEventListener('load', () => {
+  //     answers = mock.answers
+  //     CLAIM_CENTERS = mock.claim_centers
+  //     percentage = mock.percentage
+  //     resolve(mock)
+  //   })
+  //   el.type = 'text/javascript'
+  //   el.src = path
+  // })
+  const queryParams = new URLSearchParams(window.location.search)
+  const isBaseline = window.location.port == '8001'
+  const question = queryParams.get('question')
+  if (!question) {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        answers = mock.answers
+        collapsedAnswers = mock.collapsedAnswers
+        resolve(mock)
+      }, 1000)
     })
-    el.type = 'text/javascript'
-    el.src = path
-  })
-  // const queryParams = new URLSearchParams(window.location.search)
-  // const isBaseline = window.location.port == '8001'
-  // const question = queryParams.get('question')
-  // if (!question) {
-  //   return new Promise((resolve) => {
-  //     setTimeout(() => {
-  //       answers = mock.answers
-  //       collapsedAnswers = mock.collapsedAnswers
-  //       resolve(mock)
-  //     }, 1000)
-  //   })
-  // }
-  // const url = `http://35.238.25.130:8000/${isBaseline ? 'bs' : 'exp'}/${question}.json`
-  // return fetch(url)
-  //   .then(res => {
-  //     if (res.ok) return res.json()
-  //     else if (res.status == 404) throw new Error('Unknown question')
-  //     throw new Error(`Unknown error: ${res.status} (${res.statusText}) while fetching page data`)
-  //   })
-  //   .then(j => {
-  //     answers = j.answers
-  //     collapsedAnswers = j.collapsedAnswers
-  //     return j
-  //   })
-  //   .catch(e => {
-  //     alert(e.message)})
+  }
+  const url = `http://35.238.25.130:8000/${isBaseline ? 'bs' : 'exp'}/${question}.json`
+  return fetch(url)
+    .then(res => {
+      if (res.ok) return res.json()
+      else if (res.status == 404) throw new Error('Unknown question')
+      throw new Error(`Unknown error: ${res.status} (${res.statusText}) while fetching page data`)
+    })
+    .then(j => {
+      answers = j.answers
+      collapsedAnswers = j.collapsedAnswers
+      CLAIM_CENTERS = j.claim_centers
+      percentage = j.percentage
+      return j
+    })
+    .catch(e => {
+      alert(e.message)})
 }
 
 
@@ -223,8 +174,41 @@ function initWritingModal(){
 
 function initNavigationView(){
   // draw the percentage bar
-
+  const pos = percentage.positive
+  const neu = percentage.neutral
+  const neg = percentage.negative
+  const labelPercentageContainer = document.getElementById('label-percentage-container')
+  const positiveLabel = labelPercentageContainer.querySelector('.positive')
+  const negativeLabel = labelPercentageContainer.querySelector('.negative')
+  const neutralLabel = labelPercentageContainer.querySelector('.neutral')
   
+  positiveLabel.textContent = pos
+  positiveLabel.style.flexBasis = pos
+
+  negativeLabel.textContent = neg
+  negativeLabel.style.flexBasis = neg
+
+  neutralLabel.textContent = neu
+  neutralLabel.style.flexBasis = neu
+
+  const textPercentageContainer = document.getElementById('label-text-container')
+  
+  const positiveText = textPercentageContainer.querySelector('.positive')
+  const negativeText = textPercentageContainer.querySelector('.negative')
+  const neutralText = textPercentageContainer.querySelector('.neutral')
+
+  positiveText.style.flexBasis = pos
+  negativeText.style.flexBasis = neg
+  neutralText.style.flexBasis = neu
+
+  const positiveBar = document.querySelector("[data-pct-bar-bg='po2-bg-primary']")
+  positiveBar.textContent = pos
+  const negativeBar = document.querySelector("[data-pct-bar-bg='po2-bg-accent']")
+  negativeBar.textContent = neg
+
+  const neutralBar = document.querySelector("[data-pct-bar-bg='po2-bg-contrast-low']")
+  neutralBar.textContent = neu
+
   class PercentageBar {
     constructor(element) {
       this.element = element;
@@ -291,8 +275,6 @@ function flipNavigationView(currentView, el){
     chosenClaimCenter.style.backgroundColor = 'beige'
     chosenClaimCenter.style.margin = '10px 0px 10px 0px'
     claimDetailContainer.prepend(chosenClaimCenter)
-    console.log(el.textContent)
-    console.log(el.textContent.slice(12))
     // extract all claims supporting the claim-center, click event will be listened in an event delegation form
     const claimList = answers.reduce((acc, cur, ansIdx) => [
       ...acc,
@@ -518,11 +500,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // 把和数据无关的UI init放到fetchPageData之前，防止用户看到尚未初始化的丑逼UI
   
   initToTopButton()
-  initNavigationView()
+  
   initWritingModal()
   initChatbot()
   initRightSideSplit()
   const res = await fetchPageData();
+  initNavigationView()
   const {question, description, relatedQuestions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
 
 
