@@ -265,13 +265,15 @@ function flipNavigationView(currentView, el){
     chosenClaimCenter.style.backgroundColor = 'beige'
     chosenClaimCenter.style.margin = '10px 0px 10px 0px'
     claimDetailContainer.prepend(chosenClaimCenter)
-
+    console.log(el.textContent)
+    console.log(el.textContent.slice(12))
     // extract all claims supporting the claim-center, click event will be listened in an event delegation form
     const claimList = answers.reduce((acc, cur, ansIdx) => [
       ...acc,
       ...cur.claim.map((p, claimIdx) => {
         // if the claim in the data has the same claim center with what the user clicked
-        if(p.claimCenter == el.textContent.slice(5)){ // remove the index label (PC1: )
+        
+        if(p.claimCenter == el.textContent.trim().slice(5)){ // remove the index label (PC1: )
           const claimEl = document.createElement('li')
           claimEl.innerHTML = `${p.content}`
           claimEl.classList.add("claim-detail", "list-group-item")
