@@ -529,8 +529,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // initChatbot()
   // initRightSideSplit()
   const res = await fetchPageData();
-  initNavigationView()
-  const { question, description, relatedQuestions } = res; // answers 和 collapsedAnswers在await之后已经写入全局
+
+  // initNavigationView()
+  const {question, description, relatedQuestions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
 
 
 
