@@ -170,17 +170,17 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="writingModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="writingModalLabel"></h5>
           <button type="button" id='writing-modal-close-button' class="btn-close" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="answerWritingArea">Example textarea</label>
+            <label for="answerWritingArea" style="font-weight: bold;">Should I Invest in Bitcoin?</label>
             <textarea class="form-control" id="answerTextarea" rows="10" placeholder="Write your post here"></textarea>
           </div>
         </div>
         <div class="modal-footer">
-          <button id="post-button" type="button" class="btn btn-primary">Post</button>
+          <button id="post-button" type="button" class="btn btn-primary">Submit</button>
         </div>
       </div>
     </div>
@@ -196,8 +196,8 @@
     <div class="final-text">
     </div>
     <div id="final-buttons-container">
-      <button type="button" id="update-answer-button" class="btn btn-primary" onclick="OnUpdateAnswerClicked()">Update Answer</button>
-      <button type="button" id="finish-button" class="btn btn-primary" onclick="OnFinishClicked()">Finish</button>
+      <button type="button" id="update-answer-button" class="btn btn-primary" onclick="OnUpdateAnswerClicked()">Back to Edit</button>
+      <button type="button" id="finish-button" class="btn btn-primary" onclick="OnFinishClicked()">Post</button>
     </div>
   </div>
   <!-- chatbot widget  -->
