@@ -162,8 +162,11 @@ function initWritingModal(){
       if(!templateText){
         textareaEl.value = ''
       }
+      textareaEl.style.color = neutralColor
     }
+   
     else{
+      textareaEl.style.color = 'black'
       textareaEl.value = userPost
     }
   })
