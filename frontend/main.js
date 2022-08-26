@@ -467,13 +467,15 @@ function handlePostClicked() {
 
 }
 
-function OnFinishClicked() {
-  const grayoutEl = document.getElementById('grayout')
-  const finalPopupContainer = document.getElementById('final-words-container')
-  const trophyContainer = document.getElementById('trophy-container')
-  grayoutEl.style.display = 'none'
-  finalPopupContainer.style.display = 'none'
-  trophyContainer.style.display = 'none'
+
+function OnFinishClicked(){
+  // const grayoutEl = document.getElementById('grayout')
+  // const finalPopupContainer = document.getElementById('final-words-container')
+  // const trophyContainer = document.getElementById('trophy-container')
+  // grayoutEl.style.display = 'none'
+  // finalPopupContainer.style.display = 'none'
+  // trophyContainer.style.display = 'none'
+
 
   renderExtraAnswer({
     "html": userPost.split('\n').map(p => "<p class=\"q-text qu-display--block qu-wordBreak--break-word qu-textAlign--start\" style=\"box-sizing: border-box; margin-bottom: 1em; overflow-wrap: anywhere; direction: ltr;\"><span style=\"font-weight: normal; font-style: normal; background: none;\">" + p + "</span></p>").join(''),
