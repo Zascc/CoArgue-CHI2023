@@ -40,7 +40,9 @@ function fetchPageData() {
       }, 1000)
     })
   }
+
   const url = `http://35.222.191.255:8000/${isBaseline ? 'bs' : 'exp'}/${question}.json`
+
   return fetch(url)
     .then(res => {
       if (res.ok) return res.json()
@@ -55,6 +57,7 @@ function fetchPageData() {
       return j
     })
     .catch(e => {
+
       alert(e.message)
     })
 
