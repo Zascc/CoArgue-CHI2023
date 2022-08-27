@@ -57,6 +57,7 @@ function fetchPageData() {
     .catch(e => {
       alert(e.message)
     })
+
 }
 
 
@@ -137,32 +138,8 @@ function initWritingModal() {
 
   writingModalEl.addEventListener('show.bs.modal', e => {
     const textareaEl = writingModalEl.querySelector('#answerTextarea')
-    if (!userPost) {
-      const chatbotMessageEls = document.querySelector('.css-14otd4b').childNodes
-      let informationTextList = [];
-      chatbotMessageEls.forEach(p => {
-        const textContentOfP = p.querySelector("[data-qa='markdown-text']").textContent
-        if (p.querySelector("[data-qa='markdown-text']").textContent.includes("Note for you")) {
-          informationTextList.push(textContentOfP)
-        }
-      })
-      // console.log(chatbotMessageEls.children)
-      // const chatbotMessageTexts = Array(chatbotMessageEls.childNodes).map(p => {
-      //   console.log(p)
-      //   return p.querySelector("[data-qa='markdown-text']").textContent
-      // })
-      let informationText;
-      if (informationTextList.length > 1) {
-        informationText = informationTextList[-1]
-      }
-      else {
-        informationText = informationTextList[0]
-      }
-      const templateText = informationText
-      textareaEl.value = templateText
-      if (!templateText) {
-        textareaEl.value = ''
-      }
+
+    if(!userPost){
 
     }
 
@@ -453,17 +430,9 @@ function handlePostClicked() {
   userPost = textareaEl.value
 
   writingModal.hide()
-  const finalWordsContainer = document.getElementById('final-words-container')
-  const finalTextEl = finalWordsContainer.querySelector('.final-text')
-  let text = `Thanks for your sharing! After reading your post, I feel more confident about the Bitcoin topic. <br> <br>Considering your stance, there is a 3% increase in the stance group. Your reasonable premise also increases the supportiveness of the stance group by 4%. <br> <br>I'm pretty sure more and more people will learn a lot from your novel and fascinating answer!`;
-  finalTextEl.innerHTML = text
 
-  const grayoutEl = document.getElementById('grayout')
-  const finalPopupContainer = document.getElementById('final-words-container')
-  const trophyContainer = document.getElementById('trophy-container')
-  grayoutEl.style.display = 'block'
-  finalPopupContainer.style.display = 'block'
-  trophyContainer.style.display = 'block'
+  
+  OnFinishClicked()
 
 }
 
