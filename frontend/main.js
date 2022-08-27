@@ -141,7 +141,7 @@ function initWritingModal(){
       let informationTextList = [];
       chatbotMessageEls.forEach(p => {
         const textContentOfP = p.querySelector("[data-qa='markdown-text']").textContent
-        if (p.querySelector("[data-qa='markdown-text']").textContent.includes("Information Data")){
+        if (p.querySelector("[data-qa='markdown-text']").textContent.includes("Note for you")){
           informationTextList.push(textContentOfP)
         }
       })
@@ -159,10 +159,12 @@ function initWritingModal(){
       }
       const templateText = informationText
       textareaEl.value = templateText
+      textareaEl.style.color = neutralColor
       if(!templateText){
         textareaEl.value = ''
+        textareaEl.style.color = 'black'
       }
-      textareaEl.style.color = neutralColor
+      
     }
    
     else{
