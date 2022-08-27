@@ -159,16 +159,14 @@ function initWritingModal(){
       }
       const templateText = informationText
       textareaEl.value = templateText
-      textareaEl.style.color = neutralColor
       if(!templateText){
         textareaEl.value = ''
-        textareaEl.style.color = 'black'
       }
       
     }
    
     else{
-      textareaEl.style.color = 'black'
+
       textareaEl.value = userPost
     }
   })
@@ -496,7 +494,12 @@ function OnFinishClicked(){
 }
 
 function OnUpdateAnswerClicked(){
-  OnFinishClicked()
+  const grayoutEl = document.getElementById('grayout')
+  const finalPopupContainer = document.getElementById('final-words-container')
+  const trophyContainer = document.getElementById('trophy-container')
+  grayoutEl.style.display = 'none'
+  finalPopupContainer.style.display = 'none'
+  trophyContainer.style.display = 'none'
   writingModal.show()
 }
 
