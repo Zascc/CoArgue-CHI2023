@@ -96,7 +96,6 @@ mark, .mark {
   overflow: auto;
   height: fit-content;
   width: 294;
-  max-height: 35vh;
 }
 /* #note-pane-card > .card-body::-webkit-scrollbar,
 #concept-pane-card > .card-body::-webkit-scrollbar {
