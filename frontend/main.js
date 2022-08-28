@@ -488,7 +488,21 @@ function OnFinishClicked(){
     "claim": [],
     "premise": []
   })
-  download(userPost)
+  let downloadText = userPost
+
+  const chatbotMessageEls = document.querySelector('.css-14otd4b').childNodes
+      let informationTextList = [];
+      chatbotMessageEls.forEach(p => {
+        const textContentOfP = p.querySelector("[data-qa='markdown-text']").textContent
+        informationTextList.push(textContentOfP)
+             downloadText += '\n'
+             downloadText += textContentOfP
+      })
+
+
+  
+
+  download(downloadText)
 
   userPost = ''
 }
