@@ -23,4 +23,4 @@ Frontend code for CHI2022 CQA-Lurker Project
 - [x] writing pane chatting history
 
 ### 2022-08-15
-- [ ] Visualization of premise support
+- [x] Visualization of premise support
