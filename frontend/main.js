@@ -9,6 +9,8 @@ let userPost;
 let CLAIM_CENTERS;
 let percentage;
 
+let operationLog = {'navigation-view': 0, 'chatbot': 0}
+
 function fetchPageData() {
   // const queryParams = new URLSearchParams(window.location.search)
   // const control = queryParams.get('control') || 'exp'
@@ -262,6 +264,7 @@ function initNavigationView() {
 
 
 function flipNavigationView(currentView, el) {
+  operationLog["navigation-view"] += 1
   if (currentView == 'claim-center') {
     const goBackButton = document.getElementById('go-back-button')
     goBackButton.style.setProperty('display', 'inline')
@@ -500,6 +503,12 @@ function OnFinishClicked() {
     downloadText += textContentOfP
   })
 
+  downloadText += '\n'
+
+  operationLog['chatbot'] = informationTextList.length
+  
+  downloadText += `nav-view: ${operationLog["navigation-view"]}, chatbot: ${operationLog["chatbot"]}`
+
 
 
 
@@ -562,13 +571,16 @@ document.addEventListener('click', (e) => {
   }
   else if (e.target.matches('.claim-center') || e.target.matches('.claim-center *')) {
     flipNavigationView('claim-center', e.target)
+    
   }
   else if (e.target.matches('.pct-bar__fill')) {
     displayClaimCenters(e.target)
+    operationLog["navigation-view"] += 1
   }
   else if (e.target.matches('.claim-detail')) {
     const ansIdx = e.target.getAttribute('original-ans-idx')
     scrollIntoView(`.answer-outer.answer-${ansIdx}`)
+    operationLog["navigation-view"] += 1
   }
   else if (e.target.matches("[data-btn='jump-button']")) {
     // to do scrollInto that answer
