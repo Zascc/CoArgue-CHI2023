@@ -9,6 +9,7 @@ let answers; // 全局answers（应该不需要全局留着question吧）
 let writingModal;
 let claimSentenceModal;
 let userPost;
+let userPostSentiment;
 
 let CLAIM_CENTERS;
 let percentage;
@@ -468,6 +469,7 @@ async function handlePostClicked() {
   const sentiment = await fetchModelEndpoint(SENTIMENT_URL, userPost, 'Neutral')
   const finalTextEl = document.querySelector('#final-words-container .final-text')
 
+
   let totalAnserNumber;
   let exceedNumber = 0;
 
@@ -484,6 +486,9 @@ async function handlePostClicked() {
 
   const exceedPercentage = Math.round(100*exceedNumber/totalAnserNumber)
   let text = `Thanks for your sharing! <br> <br>Your word count exceeds <b>${exceedPercentage}%</b> of the existing posts. Considering the ${sentiment} stance, Your claims contribute to a new claim center, resulting in a <b>${claimIncrease}%</b> increase in the ${sentiment} group<br> <br>I'm pretty sure more and more people will learn a lot from your novel and fascinating answer!`;
+
+  userPostSentiment = sentiment
+
   finalTextEl.innerHTML = text
   stanceCount[sentiment.toLowerCase()] += 2
 
@@ -505,6 +510,8 @@ async function OnFinishClicked() {
     fetchModelEndpoint(CLAIM_URL, userPost, []),
     fetchModelEndpoint(PREMISE_URL, userPost, []),
   ])
+
+  claim.forEach(c => c.claimSentiment = userPostSentiment)
 
   renderExtraAnswer({
     "html": userPost.split('\n').map(p => "<p class=\"q-text qu-display--block qu-wordBreak--break-word qu-textAlign--start\" style=\"box-sizing: border-box; margin-bottom: 1em; overflow-wrap: anywhere; direction: ltr;\"><span style=\"font-weight: normal; font-style: normal; background: none;\">" + p + "</span></p>").join(''),
@@ -547,7 +554,11 @@ async function OnFinishClicked() {
 
   userPost = ''
 
+
   initNavigationView()
+
+  userPostSentiment = ''
+
 }
 
 function OnUpdateAnswerClicked() {
@@ -695,6 +706,6 @@ function fetchModelEndpoint(url, textData, defaultData) {
     method: 'POST',
     body: textData,
   })
-    .then(res => res.ok ? res.json() : defaultData)
+    .then(res => res.ok ? (typeof defaultData == 'string' ? res.text() : res.json() ) : defaultData)
     .catch(() => defaultData)
 }
