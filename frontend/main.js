@@ -12,6 +12,7 @@ let userPost;
 
 let CLAIM_CENTERS;
 let percentage;
+let stanceCount;
 
 let operationLog = {'navigation-view': 0, 'chatbot': 0}
 
@@ -58,6 +59,7 @@ function fetchPageData() {
       collapsedAnswers = j.collapsedAnswers
       CLAIM_CENTERS = j.claim_centers
       percentage = j.percentage
+      stanceCount = j.count
       return j
     })
     .catch(e => {
@@ -257,7 +259,7 @@ function initNavigationView() {
   document.querySelector('.pct-bar__fill.po2-bg-accent').style.backgroundColor = negativeColor
 
   // remove the labels below after loading the percentage bar
-  document.querySelector('.po2-grid.po2-gap-xs').remove()
+  // document.querySelector('.po2-grid.po2-gap-xs').remove()
   // const verticalLine = document.createElement('div')
   // verticalLine.setAttribute('id', 'vertical-line')
   // verticalLine.classList.add('vertical-line')
@@ -453,6 +455,9 @@ function addChatBubbleElement(el) {
 }
 
 async function handlePostClicked() {
+
+  // JB Page here
+
   const writingModalEl = document.getElementById('writingModal')
   const textareaEl = writingModalEl.querySelector('#answerTextarea')
   userPost = textareaEl.value
@@ -462,8 +467,33 @@ async function handlePostClicked() {
 
   const sentiment = await fetchModelEndpoint(SENTIMENT_URL, userPost, 'Neutral')
   const finalTextEl = document.querySelector('#final-words-container .final-text')
-  let text = `Thanks for your sharing! After reading your post, I feel more confident about the Bitcoin topic. <br> <br>Considering your stance, there is a 3% increase in the stance group. Your reasonable premise also increases the supportiveness of the stance group by 4%. <br> <br>I'm pretty sure more and more people will learn a lot from your novel and fascinating answer!`;
+
+  let totalAnserNumber;
+  let exceedNumber = 0;
+
+  totalAnserNumber = answers.length
+
+  answers.forEach(ans => {
+    if(ans.paragraphs.join("").length <= userPost.length){
+      exceedNumber += 1
+    }
+  })
+
+  let claimIncrease;
+  claimIncrease = Math.round(100/stanceCount[sentiment.toLowerCase()])
+
+  const exceedPercentage = Math.round(100*exceedNumber/totalAnserNumber)
+  let text = `Thanks for your sharing! <br> <br>Your word count exceeds <b>${exceedPercentage}%</b> of the existing posts. Considering the ${sentiment} stance, Your claims contribute to a new claim center, resulting in a <b>${claimIncrease}%</b> increase in the ${sentiment} group<br> <br>I'm pretty sure more and more people will learn a lot from your novel and fascinating answer!`;
   finalTextEl.innerHTML = text
+  stanceCount[sentiment.toLowerCase()] += 2
+
+  const totalCount = stanceCount['positive'] + stanceCount['neutral'] + stanceCount['negative']
+
+  percentage['positive'] = `${Math.round(100*stanceCount['positive']/totalCount)}%`
+  percentage['negative'] = `${Math.round(100*stanceCount['negative']/totalCount)}%`
+  percentage['neutral'] = `${Math.round(100*stanceCount['neutral']/totalCount)}%`
+  
+  
 
   toggleModal('final')
 }
@@ -516,6 +546,8 @@ async function OnFinishClicked() {
   download(downloadText)
 
   userPost = ''
+
+  initNavigationView()
 }
 
 function OnUpdateAnswerClicked() {
