@@ -615,9 +615,10 @@ function createAnswerEl(answerTemplate, ansIdx, ans) {
   answerNode.querySelector('.author-description').textContent = ans.author?.description;
 
 
+
   //加载单个回答的数据
-  answerNode.querySelector('.views').textContent = ans.statisticsData?.views;
-  answerNode.querySelector('.upvotes').textContent = ans.statisticsData?.upvotes;
+
+  answerNode.querySelector('.upvotes').textContent = ans.upvotes;
   markClaimAndPremise(answerNode, ans.premise, ansIdx, 'premise')
   markClaimAndPremise(answerNode, ans.claim, ansIdx, 'claim')
   return answerNode;
