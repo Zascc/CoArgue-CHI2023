@@ -54,6 +54,7 @@ function fetchPageData() {
       collapsedAnswers = j.collapsedAnswers
       CLAIM_CENTERS = j.claim_centers
       percentage = j.percentage
+      related_questions = j.related_questions
       return j
     })
     .catch(e => {
@@ -505,9 +506,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   const res = await fetchPageData();
 
   // initNavigationView()
-  const {question, description, relatedQuestions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
+  const {question, description, related_questions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
+  
+  const RQContainer = document.getElementById('related-question-container')
+  RQContainer.innerHTML = related_questions
 
+  const RAnchorEls = RQContainer.querySelectorAll('a.q-box')
 
+  RAnchorEls.forEach(p => {
+    p.setAttribute('target', '_blank')
+  })
+
+  const RDivEls = RQContainer.querySelector('[role="list"]').childNodes
+  RDivEls.forEach(p => {
+    p.style.marginBottom = "10px"
+  })
 
 
   // 加载问题
