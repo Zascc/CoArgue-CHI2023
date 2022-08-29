@@ -464,21 +464,12 @@ function OnFinishClicked(){
     "claim": [],
     "premise": []
   })
-  let downloadText = userPost
-
-  const chatbotMessageEls = document.querySelector('.css-14otd4b').childNodes
-  let informationTextList = [];
-  chatbotMessageEls.forEach(p => {
-    const textContentOfP = p.querySelector("[data-qa='markdown-text']").textContent
-    informationTextList.push(textContentOfP)
-    downloadText += '\n'
-    downloadText += textContentOfP
-  })
 
 
 
 
-  download(downloadText)
+
+  download(userPost)
 
   userPost = ''
 }
@@ -507,7 +498,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   // initNavigationView()
   const {question, description, related_questions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
-  
+
   const RQContainer = document.getElementById('related-question-container')
   RQContainer.innerHTML = related_questions
 
