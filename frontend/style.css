@@ -472,26 +472,20 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   top: 0px;
   height: 100%;
   width: 100%;
-  background-color: black;
-  opacity: 0.5;
+  background-color: rgba(0, 0, 0, 0.5);
   z-index: 9999;
   display: none;
+  padding: 15% 15% 0;
+  text-align: center;
 }
 
-#final-words-container {
-  position: fixed;
-  top: 60%;
-  left: 15%;
-  height: auto;
-  width: 70%;
+.final-words-card {
+  margin-top: 1rem;
+  padding: .5rem 1rem;
   background-color: rgb(204, 204, 204);
   color: black;
-  opacity: 1;
-  z-index: 10000;
   /* border: 3px solid; */
   border-radius: 30px;
-  display: none;
-
 }
 
 .final-text{
@@ -504,26 +498,15 @@ body.ctrl-down .proposition, body.ctrl-down .note > .content {
   margin: 10px;
 }
 
-#trophy-container{
-  position: fixed;
-  top: 15%;
-  height: 90%;
-  width: 80%;
-  color: black;
-  opacity: 1;
-  z-index: 10000;
-  left: 10%;
-  /* border: 3px solid; */
-  border-radius: 30px;
-  display: none;
-}
 .trophy-img{
-  height: auto; 
-  width: auto; 
-  max-width: 40%; 
-  max-height: 40%;
-  position: relative;
-  left: 40%;
+  height: 150px;
+  width: 150px;
+}
+
+#loading-container {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(204, 204, 204);
 }
 
 /* animation progress bar */

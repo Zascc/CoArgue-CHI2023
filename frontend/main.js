@@ -1,3 +1,7 @@
+const CLAIM_URL = 'http://35.227.185.62:6001/predictions/ClaimExtraction';
+const PREMISE_URL = 'http://35.227.185.62:6001/predictions/PremiseExtraction';
+const SENTIMENT_URL = 'http://35.227.185.62:6001/predictions/SentimentAnalysis';
+
 let [premiseColor, positiveColor, neutralColor, negativeColor] = ['#b3d9aa', '#5185db', "#b7b7b7", '#dd6765']
 
 
@@ -448,35 +452,29 @@ function addChatBubbleElement(el) {
   chatbotMessageEls.append(newMessage)
 }
 
-function handlePostClicked() {
-  // grey out the whole page and show the final trophy
-
+async function handlePostClicked() {
   const writingModalEl = document.getElementById('writingModal')
   const textareaEl = writingModalEl.querySelector('#answerTextarea')
   userPost = textareaEl.value
-
   writingModal.hide()
-  const finalWordsContainer = document.getElementById('final-words-container')
-  const finalTextEl = finalWordsContainer.querySelector('.final-text')
+
+  toggleModal('loading')
+
+  const sentiment = await fetchModelEndpoint(SENTIMENT_URL, userPost, 'Neutral')
+  const finalTextEl = document.querySelector('#final-words-container .final-text')
   let text = `Thanks for your sharing! After reading your post, I feel more confident about the Bitcoin topic. <br> <br>Considering your stance, there is a 3% increase in the stance group. Your reasonable premise also increases the supportiveness of the stance group by 4%. <br> <br>I'm pretty sure more and more people will learn a lot from your novel and fascinating answer!`;
   finalTextEl.innerHTML = text
 
-  const grayoutEl = document.getElementById('grayout')
-  const finalPopupContainer = document.getElementById('final-words-container')
-  const trophyContainer = document.getElementById('trophy-container')
-  grayoutEl.style.display = 'block'
-  finalPopupContainer.style.display = 'block'
-  trophyContainer.style.display = 'block'
-
+  toggleModal('final')
 }
 
-function OnFinishClicked() {
-  const grayoutEl = document.getElementById('grayout')
-  const finalPopupContainer = document.getElementById('final-words-container')
-  const trophyContainer = document.getElementById('trophy-container')
-  grayoutEl.style.display = 'none'
-  finalPopupContainer.style.display = 'none'
-  trophyContainer.style.display = 'none'
+async function OnFinishClicked() {
+  toggleModal('loading')
+
+  const [claim, premise] = await Promise.all([
+    fetchModelEndpoint(CLAIM_URL, userPost, []),
+    fetchModelEndpoint(PREMISE_URL, userPost, []),
+  ])
 
   renderExtraAnswer({
     "html": userPost.split('\n').map(p => "<p class=\"q-text qu-display--block qu-wordBreak--break-word qu-textAlign--start\" style=\"box-sizing: border-box; margin-bottom: 1em; overflow-wrap: anywhere; direction: ltr;\"><span style=\"font-weight: normal; font-style: normal; background: none;\">" + p + "</span></p>").join(''),
@@ -489,9 +487,12 @@ function OnFinishClicked() {
       "urlEncode": "Akash-Chetwani-1"
     },
     "date": Date.now(),
-    "claim": [],
-    "premise": []
+    claim,
+    premise,
   })
+
+  toggleModal()
+
   let downloadText = userPost
 
   const chatbotMessageEls = document.querySelector('.css-14otd4b').childNodes
@@ -518,12 +519,7 @@ function OnFinishClicked() {
 }
 
 function OnUpdateAnswerClicked() {
-  const grayoutEl = document.getElementById('grayout')
-  const finalPopupContainer = document.getElementById('final-words-container')
-  const trophyContainer = document.getElementById('trophy-container')
-  grayoutEl.style.display = 'none'
-  finalPopupContainer.style.display = 'none'
-  trophyContainer.style.display = 'none'
+  toggleModal()
   writingModal.show()
 }
 
@@ -601,6 +597,18 @@ document.addEventListener('click', (e) => {
   }
 })
 
+function toggleModal(mode) {
+  const finalIsOpen = mode == 'final'
+  const loadingIsOpen = mode == 'loading'
+  const open = finalIsOpen || loadingIsOpen
+  const grayoutEl = document.getElementById('grayout')
+  const finalPopupContainer = document.getElementById('final-words-container')
+  const loadingContainer = document.getElementById('loading-container')
+  finalPopupContainer.style.display = finalIsOpen ? 'block' : 'none'
+  loadingContainer.style.display = loadingIsOpen ? 'block' : 'none'
+  grayoutEl.style.display = open ? 'block' : 'none'
+}
+
 function renderAllAnswers() {
   const answerContainer = document.getElementById('answer-container');
   const answerTemplate = document.getElementById('template-answer').content.firstElementChild;
@@ -648,4 +656,13 @@ function download(text) {
   document.body.appendChild(element);
   element.click();
   document.body.removeChild(element);
+}
+
+function fetchModelEndpoint(url, textData, defaultData) {
+  return fetch(url, {
+    method: 'POST',
+    body: textData,
+  })
+    .then(res => res.ok ? res.json() : defaultData)
+    .catch(() => defaultData)
 }

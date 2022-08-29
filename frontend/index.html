@@ -184,20 +184,25 @@
     </div>
   </div>
   
-  <div id="grayout"></div>
+  <div id="grayout" style="display: none;">
+    
+    <div id="final-words-container" style="display: none;">
+      <img class='trophy-img' src="https://img-bsy.txrpic.com/preview/Element/00/00/76/53/E-765396-1945A8EE3.png?imageMogr2/quality/90/thumbnail/!800x%3E">
+      <div class="final-words-card">
+        <div class="final-text">
+        </div>
+        <div id="final-buttons-container">
+          <button type="button" id="update-answer-button" class="btn btn-primary" onclick="OnUpdateAnswerClicked()">Back to Edit</button>
+          <button type="button" id="finish-button" class="btn btn-primary" onclick="OnFinishClicked()">Post</button>
+        </div>
+      </div>
+    </div>
 
-  <div id="trophy-container">
-    <img class='trophy-img' src="https://img-bsy.txrpic.com/preview/Element/00/00/76/53/E-765396-1945A8EE3.png?imageMogr2/quality/90/thumbnail/!800x%3E">
-  </div>
-  
-  <div id="final-words-container">
-    <div class="final-text">
-    </div>
-    <div id="final-buttons-container">
-      <button type="button" id="update-answer-button" class="btn btn-primary" onclick="OnUpdateAnswerClicked()">Back to Edit</button>
-      <button type="button" id="finish-button" class="btn btn-primary" onclick="OnFinishClicked()">Post</button>
+    <div id="loading-container" style="display: none;">
+      <div>Loading...</div>
     </div>
   </div>
+
   <!-- chatbot widget  -->
   <div id="rasa-chat-widget" data-websocket-url="http://35.222.191.255:5005" data-root-element-id = "chatbot-pane-card-body" data-default-open=true data-height=500 data-initial-payload ="hello" ></div>
   <script src="https://unpkg.com/@rasahq/rasa-chat" type="application/javascript"></script>
