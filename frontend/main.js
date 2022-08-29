@@ -55,7 +55,8 @@ function fetchPageData() {
       return j
     })
     .catch(e => {
-      alert(e.message)})
+      alert(e.message)
+    })
 }
 
 
@@ -78,27 +79,27 @@ function markClaimAndPremise(contextElement, sentencelist, answerIndex, sentence
       className: `${sentenceCategory} ${sentenceCategory}-${sentenceIdx} ${sentenceCategory}-Center-${sentence.center}`,
       separateWordSearch: false,
       acrossElements: true,
-      each(el){
+      each(el) {
         // append tooltip if premise (This design is abandoned)
-        if(sentenceCategory == 'premise'){
+        if (sentenceCategory == 'premise') {
           // const tooptipSpan = document.createElement('span')
           // tooptipSpan.classList.add(`${sentenceCategory}-detail`)
           // tooptipSpan.innerHTML = `Testing Tooltip Text<br>Second row<br>This sentence is a ${sentenceCategory}`
           // el.appendChild(tooptipSpan)
-          
+
         }
         el.setAttribute('answer-idx', answerIndex)
         el.setAttribute(`${sentenceCategory}-idx`, sentenceIdx)
         let highlightColor = sentenceCategory == "claim" ? positiveColor : premiseColor
-        if (sentenceCategory == 'claim'){
-          if(sentence.claimSentiment == 'Neutral'){
+        if (sentenceCategory == 'claim') {
+          if (sentence.claimSentiment == 'Neutral') {
             highlightColor = neutralColor
           }
-          else if(sentence.claimSentiment == 'Negative'){
+          else if (sentence.claimSentiment == 'Negative') {
             highlightColor = negativeColor
           }
         }
-        
+
         el.style.background = highlightColor
       }
     })
@@ -111,7 +112,7 @@ function scrollIntoView(el) {
   }
   if (el instanceof NodeList || Array.isArray(el)) {
     if (!el.length) return
-    el[0].scrollIntoView({block: 'center'})
+    el[0].scrollIntoView({ block: 'center' })
     el.forEach((e, i) => {
       if (e.classList.contains('blink')) return
       e.classList.add('blink')
@@ -119,29 +120,29 @@ function scrollIntoView(el) {
     })
   } else {
     if (!el) return
-    el.scrollIntoView({block: 'center'})
+    el.scrollIntoView({ block: 'center' })
     if (el.classList.contains('blink')) return
     el.classList.add('blink')
     setTimeout(() => el.classList.remove('blink'), 2000)
   }
 }
 
-function fetchClaimDetailList(claimIdx){
+function fetchClaimDetailList(claimIdx) {
   return `claim-${claimIdx}`
 }
 
-function initWritingModal(){
+function initWritingModal() {
   const writingModalEl = document.getElementById('writingModal')
   writingModal = new bootstrap.Modal(writingModalEl)
 
   writingModalEl.addEventListener('show.bs.modal', e => {
     const textareaEl = writingModalEl.querySelector('#answerTextarea')
-    if(!userPost){
+    if (!userPost) {
       const chatbotMessageEls = document.querySelector('.css-14otd4b').childNodes
       let informationTextList = [];
       chatbotMessageEls.forEach(p => {
         const textContentOfP = p.querySelector("[data-qa='markdown-text']").textContent
-        if (p.querySelector("[data-qa='markdown-text']").textContent.includes("Note for you")){
+        if (p.querySelector("[data-qa='markdown-text']").textContent.includes("Note for you")) {
           informationTextList.push(textContentOfP)
         }
       })
@@ -151,7 +152,7 @@ function initWritingModal(){
       //   return p.querySelector("[data-qa='markdown-text']").textContent
       // })
       let informationText;
-      if (informationTextList.length > 1){
+      if (informationTextList.length > 1) {
         informationText = informationTextList[-1]
       }
       else {
@@ -159,13 +160,13 @@ function initWritingModal(){
       }
       const templateText = informationText
       textareaEl.value = templateText
-      if(!templateText){
+      if (!templateText) {
         textareaEl.value = ''
       }
-      
+
     }
-   
-    else{
+
+    else {
 
       textareaEl.value = userPost
     }
@@ -175,7 +176,7 @@ function initWritingModal(){
 
 
 
-function initNavigationView(){
+function initNavigationView() {
   // draw the percentage bar
   const pos = percentage.positive
   const neu = percentage.neutral
@@ -184,7 +185,7 @@ function initNavigationView(){
   const positiveLabel = labelPercentageContainer.querySelector('.positive')
   const negativeLabel = labelPercentageContainer.querySelector('.negative')
   const neutralLabel = labelPercentageContainer.querySelector('.neutral')
-  
+
   positiveLabel.textContent = pos
   positiveLabel.style.flexBasis = pos
 
@@ -195,7 +196,7 @@ function initNavigationView(){
   neutralLabel.style.flexBasis = neu
 
   const textPercentageContainer = document.getElementById('label-text-container')
-  
+
   const positiveText = textPercentageContainer.querySelector('.positive')
   const negativeText = textPercentageContainer.querySelector('.negative')
   const neutralText = textPercentageContainer.querySelector('.neutral')
@@ -222,27 +223,27 @@ function initNavigationView(){
   }
 
   function initPercentageBar(bar) {
-    if(bar.bar.length < 1) return;
+    if (bar.bar.length < 1) return;
     var content = '';
-    for(var i = 0; i < bar.percentages.length; i++) {
+    for (var i = 0; i < bar.percentages.length; i++) {
       var customClass = bar.percentages[i].getAttribute('data-pct-bar-bg'),
         customStyle = bar.percentages[i].getAttribute('data-pct-bar-style'),
         percentage = bar.percentages[i].textContent;
-      
-      if(!customStyle) customStyle = '';
-      if(!customClass) customClass = '';
-      content = content + '<div class="pct-bar__fill js-pct-bar__fill '+customClass+'" style="flex-basis: '+percentage+';'+customStyle+'"></div>';
+
+      if (!customStyle) customStyle = '';
+      if (!customClass) customClass = '';
+      content = content + '<div class="pct-bar__fill js-pct-bar__fill ' + customClass + '" style="flex-basis: ' + percentage + ';' + customStyle + '"></div>';
     }
     bar.bar[0].innerHTML = content;
   }
   window.PercentageBar = PercentageBar;
 
   //initialize the PercentageBar objects
-  
+
   var percentageBar = document.getElementsByClassName('js-pct-bar');
-  if( percentageBar.length > 0 ) {
-    for( var i = 0; i < percentageBar.length; i++) {
-      (function(i){new PercentageBar(percentageBar[i]);})(i);
+  if (percentageBar.length > 0) {
+    for (var i = 0; i < percentageBar.length; i++) {
+      (function (i) { new PercentageBar(percentageBar[i]); })(i);
     }
   }
   document.querySelector('.pct-bar__fill.po2-bg-primary').style.backgroundColor = positiveColor
@@ -260,11 +261,11 @@ function initNavigationView(){
 
 
 
-function flipNavigationView(currentView, el){
-  if (currentView == 'claim-center'){
+function flipNavigationView(currentView, el) {
+  if (currentView == 'claim-center') {
     const goBackButton = document.getElementById('go-back-button')
     goBackButton.style.setProperty('display', 'inline')
-    
+
     const notePaneHeader = document.querySelector('#note-pane-card > .card-header')
     notePaneHeader.textContent = "Navigation View > Claim Detail"
     notePaneHeader.append(goBackButton)
@@ -283,8 +284,8 @@ function flipNavigationView(currentView, el){
       ...acc,
       ...cur.claim.map((p, claimIdx) => {
         // if the claim in the data has the same claim center with what the user clicked
-        
-        if(p.claimCenter == el.textContent.trim().slice(5)){ // remove the index label (PC1: )
+
+        if (p.claimCenter == el.textContent.trim().slice(5)) { // remove the index label (PC1: )
           const claimEl = document.createElement('li')
           claimEl.innerHTML = `${p.content}`
           claimEl.classList.add("claim-detail", "list-group-item")
@@ -292,10 +293,10 @@ function flipNavigationView(currentView, el){
           claimEl.setAttribute('title', 'click to jump to the original answer')
           return claimEl
         }
-        
+
       }).filter(claimEl => !!claimEl)
-    ],[])
-    
+    ], [])
+
     const claimDetailPage = document.getElementById('claim-detail-page')
     const claimDetailList = claimDetailPage.querySelector('.list-group')
 
@@ -305,10 +306,10 @@ function flipNavigationView(currentView, el){
 
     claimDetailPage.style.setProperty('display', 'block')
   }
-  else if (currentView == 'claim-detail'){
+  else if (currentView == 'claim-detail') {
     const goBackButton = document.getElementById('go-back-button')
     goBackButton.style.setProperty('display', 'none')
-    
+
     const notePaneHeader = document.querySelector('#note-pane-card > .card-header')
     notePaneHeader.textContent = "Navigation View > Claim Center Overview"
     notePaneHeader.append(goBackButton)
@@ -329,8 +330,8 @@ function flipNavigationView(currentView, el){
   }
 }
 
-function displayClaimCenters(el){
-  
+function displayClaimCenters(el) {
+
   document.querySelectorAll('.pct-bar__fill').forEach(p => {
     p.style.border = null
   })
@@ -338,26 +339,26 @@ function displayClaimCenters(el){
   const stance = elClassList.contains("po2-bg-primary") ? "positive" : elClassList.contains("po2-bg-contrast-low") ? "neutral" : "negative"
 
   // calculate the percentage of each stance
-  function claimCentersSelector(x){
+  function claimCentersSelector(x) {
     return CLAIM_CENTERS[x].sort((c1, c2) => c2.supportiveness - c1.supportiveness)
   }
 
   const claimCenters = claimCentersSelector(stance)
   const stanceFirstLetter = stance[0].toUpperCase()
   const claimCenterEls = claimCenters.map((p, idx) => {
-    const {text, supportiveness} = p
+    const { text, supportiveness } = p
     const claimEl = document.createElement('li')
     claimEl.innerHTML = `<div class="stance-content">
-      <span class='${stance}'>${stanceFirstLetter}C${idx+1}:</span> ${text}
+      <span class='${stance}'>${stanceFirstLetter}C${idx + 1}:</span> ${text}
     </div>
     <div class="stance-supportiveness">
       ${supportiveness.toFixed(2)}
     </div>` // need to adjust the color to be in line with the stance color
     claimEl.classList.add("claim-center", "list-group-item")
     claimEl.setAttribute('claim-center-sentiment', stance)
-    
+
     // <div class="progress"><div class="progress-bar" role="progressbar" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div></div>
-  
+
     return claimEl
   })
 
@@ -368,30 +369,30 @@ function displayClaimCenters(el){
   })
   const claimCenterListTitle = detailListContainer.querySelector('#claim-center-list-title')
 
-  claimCenterListTitle.textContent = `${stanceFirstLetter}${stance.slice(1)} claims` 
+  claimCenterListTitle.textContent = `${stanceFirstLetter}${stance.slice(1)} claims`
   claimCenterListTitle.removeAttribute('class')
   claimCenterListTitle.classList.add(`${stance}`)
 
-  if(detailListContainer.style.getPropertyValue('display') == 'block' && detailListContainer.getAttribute('display-claim-stance') == stance){
+  if (detailListContainer.style.getPropertyValue('display') == 'block' && detailListContainer.getAttribute('display-claim-stance') == stance) {
     detailListContainer.style.setProperty('display', 'none')
     el.style.border = null
   }
-  else{
+  else {
     detailListContainer.style.setProperty('display', 'block')
     detailListContainer.setAttribute("display-claim-stance", stance)
-    el.style.border ='2px solid rgb(215, 215, 14)'
+    el.style.border = '2px solid rgb(215, 215, 14)'
   }
 }
 
-function initChatbot(){
+function initChatbot() {
   const chatWidgetContainer = document.getElementById('rasa-chat-widget-container')
-  
-  
+
+
   const chatbotButton = chatWidgetContainer.querySelector('button.large.css-qmypsf')  // init展示 click button收起来 然后调数值展开
   const chatbotBox = chatWidgetContainer.querySelector('div')
   chatbotButton.click()
   chatbotButton.style.display = 'none'
-  
+
 }
 
 function initRightSideSplit() {
@@ -403,7 +404,7 @@ function initRightSideSplit() {
   })
 }
 
-function addChatBubbleElement(el){
+function addChatBubbleElement(el) {
   const chatbotMessageEls = document.querySelector('.css-14otd4b') // all dialogue bubbles
   const newMessage = document.createElement('div')
 
@@ -414,14 +415,14 @@ function addChatBubbleElement(el){
   let similarPremise = []
   answers.forEach((ans, idx) => {
     ans.premise.forEach(pre => {
-      if(pre.supportClaimCenter == supportedClaimCenter){
-        if(similarPremise.includes(idx) || idx == chosenAnsIdx){
+      if (pre.supportClaimCenter == supportedClaimCenter) {
+        if (similarPremise.includes(idx) || idx == chosenAnsIdx) {
         }
-        else{
+        else {
           similarPremise.push(idx)
         }
-        
-        
+
+
       }
     })
   })
@@ -430,11 +431,11 @@ function addChatBubbleElement(el){
   let textPrev = `It seems that you are interested in this premise. It is used to support the claim center '${supportedClaimCenter}'.`
   newMessagePrev.innerHTML = `<div role="button" tabindex="0" data-e2e="EventContainer-bot-1660411092.834" id="" class="css-6es4cf"><div class="css-hu563a"><div class="css-463jce"><div class="css-jgse21"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="meh-blank" class="svg-inline--fa fa-meh-blank fa-w-16 css-1y53wuf" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512" style="width: 1em;"><path fill="currentColor" d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm-80 232c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32zm160 0c-17.7 0-32-14.3-32-32s14.3-32 32-32 32 14.3 32 32-14.3 32-32 32z"></path></svg></div></div><div class="css-19h6xf9"><div class="css-l3rx45" aria-describedby="tooltip-4" style="max-width: 320px;"><div data-qa="conversation-message-bubbles_div" class="css-1di2tiy"><div><span data-qa="markdown-text" class="css-8f4u10">${textPrev}</span></div></div></div></div></div></div>`
 
-  let text = `Here are some other premises supporting the same claim center` 
-  
-  
+  let text = `Here are some other premises supporting the same claim center`
+
+
   text += '. Click the buttons to jump to those answers.'
-  
+
   let buttonsHTML = ''; // <div class="css-vurnku"><button data-btn="jump-button" class=" css-1aibqey">Jump to that answer</button></div>
   similarPremise.forEach(idx => {
     buttonsHTML += `<div class="css-vurnku"><button data-btn="jump-button" original-ans-idx="${idx}" class=" css-1aibqey">answer ${idx}</button></div>`
@@ -444,13 +445,13 @@ function addChatBubbleElement(el){
   chatbotMessageEls.append(newMessage)
 }
 
-function handlePostClicked(){
+function handlePostClicked() {
   // grey out the whole page and show the final trophy
-  
+
   const writingModalEl = document.getElementById('writingModal')
   const textareaEl = writingModalEl.querySelector('#answerTextarea')
   userPost = textareaEl.value
-  
+
   writingModal.hide()
   const finalWordsContainer = document.getElementById('final-words-container')
   const finalTextEl = finalWordsContainer.querySelector('.final-text')
@@ -463,10 +464,10 @@ function handlePostClicked(){
   grayoutEl.style.display = 'block'
   finalPopupContainer.style.display = 'block'
   trophyContainer.style.display = 'block'
-  
+
 }
 
-function OnFinishClicked(){
+function OnFinishClicked() {
   const grayoutEl = document.getElementById('grayout')
   const finalPopupContainer = document.getElementById('final-words-container')
   const trophyContainer = document.getElementById('trophy-container')
@@ -491,23 +492,23 @@ function OnFinishClicked(){
   let downloadText = userPost
 
   const chatbotMessageEls = document.querySelector('.css-14otd4b').childNodes
-      let informationTextList = [];
-      chatbotMessageEls.forEach(p => {
-        const textContentOfP = p.querySelector("[data-qa='markdown-text']").textContent
-        informationTextList.push(textContentOfP)
-             downloadText += '\n'
-             downloadText += textContentOfP
-      })
+  let informationTextList = [];
+  chatbotMessageEls.forEach(p => {
+    const textContentOfP = p.querySelector("[data-qa='markdown-text']").textContent
+    informationTextList.push(textContentOfP)
+    downloadText += '\n'
+    downloadText += textContentOfP
+  })
 
 
-  
+
 
   download(downloadText)
 
   userPost = ''
 }
 
-function OnUpdateAnswerClicked(){
+function OnUpdateAnswerClicked() {
   const grayoutEl = document.getElementById('grayout')
   const finalPopupContainer = document.getElementById('final-words-container')
   const trophyContainer = document.getElementById('trophy-container')
@@ -521,16 +522,16 @@ function OnUpdateAnswerClicked(){
 // 等价于jQuery的 $.ready(...) 即 $(...)
 document.addEventListener('DOMContentLoaded', async () => {
   // 把和数据无关的UI init放到fetchPageData之前，防止用户看到尚未初始化的丑逼UI
-  
+
   initToTopButton()
-  
+
   initWritingModal()
   initChatbot()
   initRightSideSplit()
   const res = await fetchPageData();
   initNavigationView()
-  const {question, description, relatedQuestions} = res; // answers 和 collapsedAnswers在await之后已经写入全局
-  
+  const { question, description, relatedQuestions } = res; // answers 和 collapsedAnswers在await之后已经写入全局
+
 
 
 
@@ -539,7 +540,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('question-description').textContent = description
 
 
-    
+
   // 加载所有回答
   renderAllAnswers();
 })
@@ -562,28 +563,28 @@ document.addEventListener('click', (e) => {
   else if (e.target.matches('.claim-center') || e.target.matches('.claim-center *')) {
     flipNavigationView('claim-center', e.target)
   }
-  else if (e.target.matches('.pct-bar__fill')){
+  else if (e.target.matches('.pct-bar__fill')) {
     displayClaimCenters(e.target)
   }
-  else if (e.target.matches('.claim-detail')){
+  else if (e.target.matches('.claim-detail')) {
     const ansIdx = e.target.getAttribute('original-ans-idx')
     scrollIntoView(`.answer-outer.answer-${ansIdx}`)
   }
-  else if (e.target.matches("[data-btn='jump-button']")){
+  else if (e.target.matches("[data-btn='jump-button']")) {
     // to do scrollInto that answer
     const ansIdx = e.target.getAttribute('original-ans-idx')
     scrollIntoView(`.answer-outer.answer-${ansIdx}`)
   }
-  else if (e.target.matches('.premise')){
+  else if (e.target.matches('.premise')) {
     addChatBubbleElement(e.target)
   }
-  else if (e.target.matches('#writing-modal-close-button')){
+  else if (e.target.matches('#writing-modal-close-button')) {
     const writingModalEl = document.getElementById('writingModal')
     const textareaEl = writingModalEl.querySelector('#answerTextarea')
     userPost = textareaEl.value
     writingModal.hide()
   }
-  else if (e.target.matches('#post-button')){
+  else if (e.target.matches('#post-button')) {
     handlePostClicked()
   }
 })
