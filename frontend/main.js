@@ -162,7 +162,7 @@ function initWritingModal() {
       // })
       let informationText;
       if (informationTextList.length > 1) {
-        informationText = informationTextList[informationText.length - 1]
+        informationText = informationTextList[informationTextList.length - 1]
       }
       else {
         informationText = informationTextList[0]
