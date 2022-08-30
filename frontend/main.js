@@ -485,7 +485,7 @@ async function handlePostClicked() {
   claimIncrease = Math.round(100/stanceCount[sentiment.toLowerCase()])
 
   const exceedPercentage = Math.round(100*exceedNumber/totalAnserNumber)
-  let text = `Thanks for your sharing! <br> <br>Your word count exceeds <b>${exceedPercentage}%</b> of the existing posts. Considering the ${sentiment} stance, Your claims contribute to a new claim center, resulting in a <b>${claimIncrease}%</b> increase in the ${sentiment} group<br> <br>I'm pretty sure more and more people will learn a lot from your novel and fascinating answer!`;
+  let text = `Thanks for your sharing! <br> <br>Your word count exceeds <b style="font-size: xx-large">${exceedPercentage}%</b> of the existing posts. I feel like you take a <b>${sentiment}</b> stance on this topic. Considering the ${sentiment} stance, Your claims contribute to a new claim center, resulting in a <b style="font-size: xx-large">${claimIncrease}%</b> increase in the proportion of this ${sentiment} stance group<br> <br>I'm pretty sure more and more people will learn a lot from your novel and fascinating answer!`;
 
   userPostSentiment = sentiment
 
