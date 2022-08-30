@@ -18,6 +18,14 @@
   margin: 1rem 0.25rem 1.5rem;
 }
 
+#question-container {
+  position: sticky;
+  top: -1px;
+  background: white;
+  z-index: 2;
+  padding: 10px 0 0 0;
+}
+
 /* profile */
 .avatar {
   max-width: 36px;
