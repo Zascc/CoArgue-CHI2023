@@ -5,7 +5,7 @@ const SENTIMENT_URL = 'http://35.227.185.62:6001/predictions/SentimentAnalysis';
 let [premiseColor, positiveColor, neutralColor, negativeColor] = ['#b3d9aa', '#5185db', "#b7b7b7", '#dd6765']
 
 
-let answers; // 全局answers（应该不需要全局留着question吧）
+let answers;
 let writingModal;
 let claimSentenceModal;
 let userPost;
@@ -36,36 +36,54 @@ function fetchPageData() {
   //   el.type = 'text/javascript'
   //   el.src = path
   // })
+  // const queryParams = new URLSearchParams(window.location.search)
+  // const isBaseline = window.location.port == '8001'
+  // const question = queryParams.get('question')
+  // if (!question) {
+  //   return new Promise((resolve) => {
+  //     setTimeout(() => {
+  //       answers = mock.answers
+  //       collapsedAnswers = mock.collapsedAnswers
+  //       resolve(mock)
+  //     }, 1000)
+  //   })
+  // }
+  // const url = `http://35.222.191.255:8000/${isBaseline ? 'bs' : 'exp'}/${question}.json`
+  // return fetch(url)
+  //   .then(res => {
+  //     if (res.ok) return res.json()
+  //     else if (res.status == 404) throw new Error('Unknown question')
+  //     throw new Error(`Unknown error: ${res.status} (${res.statusText}) while fetching page data`)
+  //   })
+  //   .then(j => {
+  //     answers = j.answers
+  //     collapsedAnswers = j.collapsedAnswers
+  //     CLAIM_CENTERS = j.claim_centers
+  //     percentage = j.percentage
+  //     stanceCount = j.count
+  //     return j
+  //   })
+  //   .catch(e => {
+  //     alert(e.message)
+  //   })
   const queryParams = new URLSearchParams(window.location.search)
-  const isBaseline = window.location.port == '8001'
-  const question = queryParams.get('question')
-  if (!question) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        answers = mock.answers
-        collapsedAnswers = mock.collapsedAnswers
-        resolve(mock)
-      }, 1000)
+  // const control = queryParams.get('control') || 'exp'
+  const question = queryParams.get('question') || 'bitcoin'
+  const dataPath = `${question}.js`
+  return new Promise((resolve) => {
+    const documentHead = document.getElementsByTagName('head')[0]
+    const el = document.createElement('script')
+    documentHead.appendChild(el)
+    el.addEventListener('load', () => {
+      answers = mock.answers
+      CLAIM_CENTERS = mock.claim_centers
+      percentage = mock.percentage
+      stanceCount = mock.count
+      resolve(mock)
     })
-  }
-  const url = `http://35.222.191.255:8000/${isBaseline ? 'bs' : 'exp'}/${question}.json`
-  return fetch(url)
-    .then(res => {
-      if (res.ok) return res.json()
-      else if (res.status == 404) throw new Error('Unknown question')
-      throw new Error(`Unknown error: ${res.status} (${res.statusText}) while fetching page data`)
-    })
-    .then(j => {
-      answers = j.answers
-      collapsedAnswers = j.collapsedAnswers
-      CLAIM_CENTERS = j.claim_centers
-      percentage = j.percentage
-      stanceCount = j.count
-      return j
-    })
-    .catch(e => {
-      alert(e.message)
-    })
+    el.type = 'text/javascript'
+    el.src = dataPath
+  })
 }
 
 

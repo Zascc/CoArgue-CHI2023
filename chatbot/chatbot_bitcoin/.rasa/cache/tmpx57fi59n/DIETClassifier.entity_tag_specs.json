@@ -1,0 +1,20 @@
+[
+  {
+    "tag_name": "entity",
+    "ids_to_tags": {
+      "1": "B-StanceCategory",
+      "2": "I-StanceCategory",
+      "3": "L-StanceCategory",
+      "4": "U-StanceCategory",
+      "0": "O"
+    },
+    "tags_to_ids": {
+      "B-StanceCategory": 1,
+      "I-StanceCategory": 2,
+      "L-StanceCategory": 3,
+      "U-StanceCategory": 4,
+      "O": 0
+    },
+    "num_tags": 5
+  }
+]
