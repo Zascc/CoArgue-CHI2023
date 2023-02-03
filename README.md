@@ -39,6 +39,6 @@ Simply open the `index.html` in the "frontend" folder to run the website.
 
 It contains the augmented information for two question threads. To switch between the two threads, provide the URL param `question=bitcoin` or `question=car`. The system defaults to `bitcoin` if not provided.
 
-It also contains the baseline version, which is no more than a port of plain Quora website, with UI element aligned. To switch to the baseline version, `git switch baseline` and provide the URL param `control=bs`. The default value is `control=exp`, which is for the experiment CoArgue system.
+It also contains the baseline version, which is no more than a port of plain Quora website, with UI element aligned. To switch to the baseline version, do `git switch baseline`.
 ## Cite
 TODO, not available yet.
