@@ -43,20 +43,20 @@ It also contains the baseline version, which is no more than a port of plain Quo
 ## Cite
 ```bibtex
 @inproceedings{10.1145/3544548.3580932,
-author = {Liu, Chengzhong and Zhou, Shixu and Liu, Dingdong and Li, Junze and Huang, Zeyu and Ma, Xiaojuan},
-title = {CoArgue : Fostering Lurkers’ Contribution to Collective Arguments in Community-Based QA Platforms},
-year = {2023},
-isbn = {9781450394215},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-url = {https://doi.org/10.1145/3544548.3580932},
-doi = {10.1145/3544548.3580932},
-abstract = {In Community-Based Question Answering (CQA) platforms, people can participate in discussions about non-factoid topics by marking their stances, providing premises, or arguing for the opinions they support, which forms “collective arguments”. The sustainable development of collective arguments relies on a big contributor base, yet most of the frequent CQA users are lurkers who seldom speak out. With a formative study, we identified detailed obstacles preventing lurkers from contributing to collective arguments. We consequently designed a processing pipeline for extracting and summarizing augmentative elements from question threads. Based on this we built CoArgue, a tool with navigation and chatbot features to support CQA lurkers’ motivation and ability in making contributions. Through a within-subject study (N=24), we found that, compared to a Quora-like baseline, participants perceived CoArgue as significantly more useful in enhancing their motivation and ability to join collective arguments and found the experience to be more engaging and productive.},
-booktitle = {Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems},
-articleno = {271},
-numpages = {17},
-keywords = {Collective Arguments, Lurker Support, CQA Platforms},
-location = {Hamburg, Germany},
-series = {CHI '23}
+    author = {Liu, Chengzhong and Zhou, Shixu and Liu, Dingdong and Li, Junze and Huang, Zeyu and Ma, Xiaojuan},
+    title = {CoArgue : Fostering Lurkers’ Contribution to Collective Arguments in Community-Based QA Platforms},
+    year = {2023},
+    isbn = {9781450394215},
+    publisher = {Association for Computing Machinery},
+    address = {New York, NY, USA},
+    url = {https://doi.org/10.1145/3544548.3580932},
+    doi = {10.1145/3544548.3580932},
+    abstract = {In Community-Based Question Answering (CQA) platforms, people can participate in discussions about non-factoid topics by marking their stances, providing premises, or arguing for the opinions they support, which forms “collective arguments”. The sustainable development of collective arguments relies on a big contributor base, yet most of the frequent CQA users are lurkers who seldom speak out. With a formative study, we identified detailed obstacles preventing lurkers from contributing to collective arguments. We consequently designed a processing pipeline for extracting and summarizing augmentative elements from question threads. Based on this we built CoArgue, a tool with navigation and chatbot features to support CQA lurkers’ motivation and ability in making contributions. Through a within-subject study (N=24), we found that, compared to a Quora-like baseline, participants perceived CoArgue as significantly more useful in enhancing their motivation and ability to join collective arguments and found the experience to be more engaging and productive.},
+    booktitle = {Proceedings of the 2023 CHI Conference on Human Factors in Computing Systems},
+    articleno = {271},
+    numpages = {17},
+    keywords = {Collective Arguments, Lurker Support, CQA Platforms},
+    location = {Hamburg, Germany},
+    series = {CHI '23}
 }
 ```
