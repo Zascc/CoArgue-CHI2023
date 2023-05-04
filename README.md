@@ -41,6 +41,7 @@ It contains the augmented information for two question threads. To switch betwee
 
 It also contains the baseline version, which is no more than a port of plain Quora website, with UI element aligned. To switch to the baseline version, do `git switch baseline`.
 ## Cite
+```bibtex
 @inproceedings{10.1145/3544548.3580932,
 author = {Liu, Chengzhong and Zhou, Shixu and Liu, Dingdong and Li, Junze and Huang, Zeyu and Ma, Xiaojuan},
 title = {CoArgue : Fostering Lurkers’ Contribution to Collective Arguments in Community-Based QA Platforms},
@@ -58,3 +59,4 @@ keywords = {Collective Arguments, Lurker Support, CQA Platforms},
 location = {Hamburg, Germany},
 series = {CHI '23}
 }
+```
